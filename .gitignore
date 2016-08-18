@@ -1,3 +1,6 @@
 CMakeCache.txt
 cmake_install.cmake
 build
+.idea
+.DS_Store
+*.swp
