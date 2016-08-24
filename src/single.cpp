@@ -58,8 +58,6 @@ int getSampleSize(std::vector<Mat>* pyrH)
 void copyCell(Mat* src, Mat* dst, int is, int js, int id, int jd)
 {
   Vec3b color = src->at<Vec3b>(Point(is, js));
-  std::cout << is << " " << js << std::endl;
-  std::cout << "COLOR " << (int) color[0] << " " << (int) color[1] << std::endl;
   for (int c = 0; c < src->channels(); ++c)
   {
     dst->at<uchar>(Point(id, jd + c)) = color[0];
@@ -118,8 +116,6 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
   {
     Mat hi = pyrH->at(l);
     Mat li = pyrL->at(l + 1);
-    //imshow("hi", hi);
-    //waitKey(0);
 
     std::cout << " DIM " << hi.cols << "  " << hi.rows << " " << hi.channels() << std::endl;
     for(int  i = 0; i < hi.rows - 1; ++i)
@@ -132,9 +128,6 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
       }
     }
   }
-
-  imshow("samples", samples);
-  waitKey(0);
 
   return samples;
 }
@@ -162,19 +155,22 @@ int main(int argc, char** argv) {
 
   Mat samples = buildSampleData(pyrH, pyrL);
 
-  EM em = EM(7);
-  em.train(samples);
-  if (em.isTrained()){
+
+
+  EM model(7, EM::COV_MAT_GENERIC, TermCriteria(TermCriteria::COUNT + TermCriteria::EPS, 10, 10));
+
+  std::cout << "model created" << std::endl;
+  model.train(samples);
+
+  if (model.isTrained()){
     std::cout << "model trained" << std::endl;
   } else {
     std::cout << "model not trained" << std::endl;
   }
-  em.predict(samples);
-  /*
-  namedWindow( window_name, WINDOW_AUTOSIZE );
-  imshow( window_name, hm2 );
-  waitKey(0);
-  */
+
+  const vector<Mat>& covs  = model.get<vector<Mat>>("covs");
+  //std::cout << covs.at(0).rows << " " << covs.at(0).cols << std::endl;
+  //std::cout << covs.at(0) << std::endl;
 
   return 0;
 

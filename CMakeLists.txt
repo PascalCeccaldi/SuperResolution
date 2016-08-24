@@ -16,6 +16,7 @@ FIND_PACKAGE(TBB REQUIRED)
 
 include_directories ( include )
 include_directories(${TBB_INCLUDE_DIRS})
+
 add_definitions(${TBB_DEFINITIONS})
 
 add_executable(StreamFilterApp src/main.cpp src/ErodeFilter.cpp  src/inputFilter.cpp src/outputFilter.cpp)
