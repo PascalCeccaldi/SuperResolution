@@ -45,7 +45,7 @@ std::vector<Mat>* buildLPyramid(std::vector<Mat>* pyrH, float scale_factor)
 
 int getSampleSize(std::vector<Mat>* pyrH)
 {
-  int size;
+  int size = 0;
   for (Mat hmi: *pyrH)
   {
     size += hmi.rows * hmi.cols;
@@ -57,17 +57,11 @@ void copyCell(Mat* src, Mat* dst, int is, int js, int id, int jd)
 {
   Vec3b color = src->at<Vec3b>(Point(is, js));
   dst->at<Vec3b>(Point(id, jd)) = color;
-  /*
-  uchar* origp;
-  uchar* destp;
-  for (int c = 0; c < src->channels(); ++c)
-  {
-    origp = src->ptr<uchar>(is, js, c);
-    destp = dst->ptr<uchar>(id, jd, c);
-    origp = destp;
-    std::cout << destp << std::endl;
-  }
-   */
+}
+
+void setCell(Mat* dst, int row, int col, Vec3b value)
+{
+  dst->at<Vec3b>(Point(row, col)) = value;
 }
 
 bool isInBounds(Mat* src, int i, int j)
@@ -77,21 +71,26 @@ bool isInBounds(Mat* src, int i, int j)
   return false;
 }
 
-int setNeighborhood(Mat* src, Mat* dst, int row, int col, int index)
+
+int setNeighborhood(Mat* src, Mat* dst, int row, int col, int sample_index)
 {
+  int index = 0;
   for (int i = 0; i < 3; ++i)
   {
     for (int j = 0; j < 3; ++j) {
       if (i == 1 && j == 1)
         continue;
       if (isInBounds(src, row + i, col + i)) {
-        copyCell(src, dst, row, col, row + i, col + i);
+        copyCell(src, dst, sample_index, index, row + i, col + i);
+      }
+      else
+      {
+        Vec3b color(0, 0, 0);
+        setCell(dst, sample_index, index, color);
       }
       index++;
-
     }
   }
-  return index;
 }
 
 Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
@@ -99,6 +98,7 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
 
   Mat first = *pyrH->begin();
   Mat samples(getSampleSize(pyrH), 9, CV_8UC3);
+
 
   int channels = first.channels();
 
@@ -117,14 +117,14 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
       for (int  j = 0; j < hi.cols; ++j)
       {
         copyCell(&hi, &samples, i, j, sample_index, 0);
+        setNeighborhood(&li, &samples, i, j, sample_index);
         sample_index++;
-        sample_index = setNeighborhood(&li, &samples, i, j, sample_index);
       }
     }
   }
 
-  imshow("samples", samples);
-  waitKey(0);
+  //imshow("samples", samples);
+  //waitKey(0);
 
   return samples;
 }
