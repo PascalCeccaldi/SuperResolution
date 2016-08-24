@@ -36,11 +36,97 @@ std::vector<Mat>* buildLPyramid(std::vector<Mat>* pyrH, float scale_factor)
     int w = (int) (hmi.rows * scale_factor);
 
     resize(hmi, lmi, Size(h, w), CV_INTER_CUBIC);
-    pyrL->push_back(lmi);
+    pyrL->insert(pyrL->begin(), lmi);
   }
   pyrH->pop_back();
 
   return pyrL;
+}
+
+int getSampleSize(std::vector<Mat>* pyrH)
+{
+  int size;
+  for (Mat hmi: *pyrH)
+  {
+    size += hmi.rows * hmi.cols;
+  }
+  return size;
+}
+
+void copyCell(Mat* src, Mat* dst, int is, int js, int id, int jd)
+{
+  Vec3b color = src->at<Vec3b>(Point(is, js));
+  dst->at<Vec3b>(Point(id, jd)) = color;
+  /*
+  uchar* origp;
+  uchar* destp;
+  for (int c = 0; c < src->channels(); ++c)
+  {
+    origp = src->ptr<uchar>(is, js, c);
+    destp = dst->ptr<uchar>(id, jd, c);
+    origp = destp;
+    std::cout << destp << std::endl;
+  }
+   */
+}
+
+bool isInBounds(Mat* src, int i, int j)
+{
+  if (i > 0 && j > 0 && i < src->rows && j < src->cols)
+    return true;
+  return false;
+}
+
+int setNeighborhood(Mat* src, Mat* dst, int row, int col, int index)
+{
+  for (int i = 0; i < 3; ++i)
+  {
+    for (int j = 0; j < 3; ++j) {
+      if (i == 1 && j == 1)
+        continue;
+      if (isInBounds(src, row + i, col + i)) {
+        copyCell(src, dst, row, col, row + i, col + i);
+      }
+      index++;
+
+    }
+  }
+  return index;
+}
+
+Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
+{
+
+  Mat first = *pyrH->begin();
+  Mat samples(getSampleSize(pyrH), 9, CV_8UC3);
+
+  int channels = first.channels();
+
+  int sample_index = 0;
+
+  for(int l = 0; l < pyrH->size(); ++l)
+  {
+    Mat hi = pyrH->at(l);
+    Mat li = pyrL->at(l + 1);
+    imshow("hi", hi);
+    waitKey(0);
+
+    std::cout << " DIM " << hi.cols << "  " << hi.rows << " " << hi.channels() << std::endl;
+    for(int  i = 0; i < hi.rows; ++i)
+    {
+      for (int  j = 0; j < hi.cols; ++j)
+      {
+        copyCell(&hi, &samples, i, j, sample_index, 0);
+        sample_index++;
+        sample_index = setNeighborhood(&li, &samples, i, j, sample_index);
+      }
+    }
+  }
+
+  imshow("samples", samples);
+  waitKey(0);
+
+  return samples;
 }
 
 
@@ -63,6 +149,8 @@ int main(int argc, char** argv) {
   std::vector<Mat>* pyrL = buildLPyramid(pyrH, scale_factor);
 
   std::cout << pyrH->size() << " " << pyrL->size() << std::endl;
+
+  Mat samples = buildSampleData(pyrH, pyrL);
 
   /*
   namedWindow( window_name, WINDOW_AUTOSIZE );
