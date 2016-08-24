@@ -3,6 +3,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <iostream>
+
 #include <vector>
 
 using namespace cv;
@@ -57,12 +58,20 @@ int getSampleSize(std::vector<Mat>* pyrH)
 void copyCell(Mat* src, Mat* dst, int is, int js, int id, int jd)
 {
   Vec3b color = src->at<Vec3b>(Point(is, js));
-  dst->at<Vec3b>(Point(id, jd)) = color;
+  std::cout << is << " " << js << std::endl;
+  std::cout << "COLOR " << (int) color[0] << " " << (int) color[1] << std::endl;
+  for (int c = 0; c < src->channels(); ++c)
+  {
+    dst->at<uchar>(Point(id, jd + c)) = color[0];
+  }
 }
 
 void setCell(Mat* dst, int row, int col, Vec3b value)
 {
-  dst->at<Vec3b>(Point(row, col)) = value;
+  for (int c = 0; c < 3; ++c)
+  {
+    dst->at<uchar>(row, col + c) = value[c];
+  }
 }
 
 bool isInBounds(Mat* src, int i, int j)
@@ -81,15 +90,15 @@ int setNeighborhood(Mat* src, Mat* dst, int row, int col, int sample_index)
     for (int j = 0; j < 3; ++j) {
       if (i == 1 && j == 1)
         continue;
-      if (isInBounds(src, row + i, col + i)) {
-        copyCell(src, dst, sample_index, index, row + i, col + i);
+      if (isInBounds(src, row + i, col + j)) {
+        copyCell(src, dst, row + i, col + j, sample_index, index);
       }
       else
       {
         Vec3b color(0, 0, 0);
         setCell(dst, sample_index, index, color);
       }
-      index++;
+      index += 3;
     }
   }
 }
@@ -98,7 +107,7 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
 {
 
   Mat first = *pyrH->begin();
-  Mat samples(getSampleSize(pyrH), 9, CV_8UC3);
+  Mat samples(getSampleSize(pyrH), 28, CV_8UC1);
 
 
   int channels = first.channels();
@@ -109,13 +118,13 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
   {
     Mat hi = pyrH->at(l);
     Mat li = pyrL->at(l + 1);
-    imshow("hi", hi);
-    waitKey(0);
+    //imshow("hi", hi);
+    //waitKey(0);
 
     std::cout << " DIM " << hi.cols << "  " << hi.rows << " " << hi.channels() << std::endl;
-    for(int  i = 0; i < hi.rows; ++i)
+    for(int  i = 0; i < hi.rows - 1; ++i)
     {
-      for (int  j = 0; j < hi.cols; ++j)
+      for (int  j = 0; j < hi.cols - 1; ++j)
       {
         copyCell(&hi, &samples, i, j, sample_index, 0);
         setNeighborhood(&li, &samples, i, j, sample_index);
@@ -124,8 +133,8 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
     }
   }
 
-  //imshow("samples", samples);
-  //waitKey(0);
+  imshow("samples", samples);
+  waitKey(0);
 
   return samples;
 }
