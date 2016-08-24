@@ -1,7 +1,11 @@
 #include <highgui.h>
 #include "outputFilter.hh"
+#include <stdio.h>
+#include <opencv2/opencv.hpp>
 
-OutputFilter::OutputFilter() : filter(true)
+OutputFilter::OutputFilter(CvVideoWriter* writer) :
+    filter(true),
+    writer(writer)
 {}
 
 
@@ -12,7 +16,16 @@ void* OutputFilter::operator()(void* tok)
 
   IplImage* img = pair->first;
 
-  cvShowImage("StreamFilter", img);
+  cvShowImage("img", img);
+
+  char buf[100];
+  sprintf(buf, "frames/%03d.jpg", counter); // Make sure directory 'frames' exists.
+  counter++;
+  // cvWrite
+
+  cvSaveImage(buf, img);
+
+  //cvWriteFrame(writer, img);
 
   if (cvWaitKey(1) != -1)
   {

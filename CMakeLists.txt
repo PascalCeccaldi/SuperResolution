@@ -3,6 +3,11 @@ project (StreamFilter)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules/)
 
+set(CMAKE_PREFIX_PATH "/usr/local/opt/opencv/share/OpenCV")
+
+set(OpenCV_INCLUDE_DIRS "/usr/local/opt/opencv/include")
+set(OpenCV_LIBS "/usr/local/opt/opencv/lib")
+
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++14 -Wall -W -pedantic -g")
@@ -21,4 +26,8 @@ include_directories(${TBB_INCLUDE_DIRS})
 add_definitions(${TBB_DEFINITIONS})
 
 add_executable(StreamFilterApp src/main.cpp src/ErodeFilter.cpp  src/inputFilter.cpp src/outputFilter.cpp)
+add_executable(sres src/single.cpp)
+
 target_link_libraries(StreamFilterApp ${TBB_LIBRARIES} ${OpenCV_LIBS})
+target_link_libraries(sres ${TBB_LIBRARIES} ${OpenCV_LIBS})
+

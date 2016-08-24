@@ -11,10 +11,14 @@ void* ErodeFilter::operator()(void* elt)
 
 
   IplImage* out;
+  out = cvCreateImage(cvSize(img->width * 4, img->height * 4), img->depth, img->nChannels);
 
-  out = cvCreateImage(cvGetSize(img), IPL_DEPTH_8U, img->nChannels);
+  cvResize(img, out, CV_INTER_CUBIC);
 
-  cvErode(img, out, 0, 2);
+  //out = cvCreateImage(cvGetSize(img), IPL_DEPTH_8U, img->nChannels);
+
+
+  //cvErode(img, out, 0, 2);
 
   std::pair<IplImage*, IplImage*>* pair2
     = new std::pair<IplImage*, IplImage*>(out, pair->second);
