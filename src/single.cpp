@@ -1,4 +1,5 @@
 #include <opencv2/core/core.hpp>
+#include <opencv2/ml/ml.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <iostream>
@@ -152,6 +153,14 @@ int main(int argc, char** argv) {
 
   Mat samples = buildSampleData(pyrH, pyrL);
 
+  EM em = EM(7);
+  em.train(samples);
+  if (em.isTrained()){
+    std::cout << "model trained" << std::endl;
+  } else {
+    std::cout << "model not trained" << std::endl;
+  }
+  em.predict(samples);
   /*
   namedWindow( window_name, WINDOW_AUTOSIZE );
   imshow( window_name, hm2 );

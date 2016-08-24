@@ -3,10 +3,6 @@ project (StreamFilter)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules/)
 
-set(CMAKE_PREFIX_PATH "/usr/local/opt/opencv/share/OpenCV")
-
-set(OpenCV_INCLUDE_DIRS "/usr/local/opt/opencv/include")
-set(OpenCV_LIBS "/usr/local/opt/opencv/lib")
 
 
 
@@ -30,4 +26,3 @@ add_executable(sres src/single.cpp)
 
 target_link_libraries(StreamFilterApp ${TBB_LIBRARIES} ${OpenCV_LIBS})
 target_link_libraries(sres ${TBB_LIBRARIES} ${OpenCV_LIBS})
-
