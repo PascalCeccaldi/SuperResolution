@@ -132,6 +132,27 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
   return samples;
 }
 
+std::vector<Mat> getUx(Mat means)
+{
+  std::vector<Mat> ux;
+  for (int i = 0; i < means.rows; i++)
+  {
+    Mat uix(means, Rect(0, i, 3, 1));
+    ux.push_back(uix);
+  }
+  return ux;
+}
+
+std::vector<Mat> getUy(Mat means)
+{
+  std::vector<Mat> uy;
+  for (int i = 0; i < means.rows; i++)
+  {
+    Mat uiy(means, Rect(3, i, 25, 1));
+    uy.push_back(uiy);
+  }
+  return uy;
+}
 
 int main(int argc, char** argv) {
 
@@ -169,8 +190,36 @@ int main(int argc, char** argv) {
   }
 
   const vector<Mat>& covs  = model.get<vector<Mat>>("covs");
-  //std::cout << covs.at(0).rows << " " << covs.at(0).cols << std::endl;
-  //std::cout << covs.at(0) << std::endl;
+  const Mat means  = model.get<Mat>("means");
+  const Mat weights  = model.get<Mat>("weights");
+  std::vector<Mat> ux = getUx(means);
+  std::vector<Mat> uy = getUy(means);
+
+
+  std::vector<Mat> sxx;
+  std::vector<Mat> sxy;
+  std::vector<Mat> syx;
+  std::vector<Mat> syy;
+
+
+  for (int i = 0; i < covs.size(); i++)
+  {
+    Mat sixx(covs.at(i), Rect(0, 0, 3, 3));
+    sxx.push_back(sixx);
+    Mat sixy(covs.at(i), Rect(3, 0, 5, 3));
+    sxy.push_back(sixy);
+    Mat siyx(covs.at(i), Rect(0, 3, 3, 25));
+    syx.push_back(siyx);
+    Mat siyy(covs.at(i), Rect(3, 3, 25, 25));
+    syy.push_back(siyy);
+  }
+
+
+  std::cout << covs.at(0).rows << " " << covs.at(0).cols << std::endl;
+  std::cout << means.rows << " " << means.cols << std::endl;
+  std::cout << weights.rows << " " << weights.cols << std::endl;
+  std::cout << weights << std::endl;
+
 
   return 0;
 
