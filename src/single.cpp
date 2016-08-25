@@ -66,14 +66,14 @@ void copyCell(Mat* src, Mat* dst, int is, int js, int id, int jd)
 {
 
   ASSERT_EX((is >= 0 && is < src->rows), std::cout << "IS" << is << std::endl);
-  ASSERT_EX((js >= 0 && is < src->cols), std::cout << "JS" << js << std::endl);
+  ASSERT_EX((js >= 0 && js < src->cols), std::cout << "JS" << js << std::endl);
   ASSERT_EX((id >= 0 && id + 3 < dst->rows), std::cout << "ID" << id + 3 << std::endl);
   ASSERT_EX((jd >= 0 && jd + 3 < dst->cols), std::cout << "JD" << jd + 3 << std::endl);
 
-  Vec3b color = src->at<Vec3b>(Point(is, js));
+  Vec3b color = src->at<Vec3b>(is, js);
   for (int c = 0; c < src->channels(); ++c)
   {
-    dst->at<uchar>(Point(id, jd + c)) = color[0];
+    dst->at<uchar>(id, jd + c) = color[0];
   }
 }
 
@@ -118,7 +118,7 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
 {
 
   Mat first = *pyrH->begin();
-  Mat samples(getSampleSize(pyrH), 28, CV_8UC1);
+  Mat samples(getSampleSize(pyrH), 27, CV_8UC1);
 
 
   int channels = first.channels();
@@ -142,7 +142,6 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
       }
     }
   }
-
   return samples;
 }
 
@@ -151,7 +150,7 @@ std::vector<Mat> getUx(Mat means)
   std::vector<Mat> ux;
   for (int i = 0; i < means.rows; i++)
   {
-    Mat uix(means, Rect(0, i, 25, 1));
+    Mat uix(means, Rect(0, i, 24, 1));
     ux.push_back(uix);
   }
   return ux;
@@ -162,7 +161,7 @@ std::vector<Mat> getUy(Mat means)
   std::vector<Mat> uy;
   for (int i = 0; i < means.rows; i++)
   {
-    Mat uiy(means, Rect(25, i, 3, 1));
+    Mat uiy(means, Rect(24, i, 3, 1));
     uy.push_back(uiy);
   }
   return uy;
@@ -218,13 +217,13 @@ int main(int argc, char** argv) {
 
   for (unsigned int i = 0; i < covs.size(); i++)
   {
-    Mat sixx(covs.at(i), Rect(0, 0, 25, 25));
+    Mat sixx(covs.at(i), Rect(0, 0, 24, 24));
     sxx.push_back(sixx);
-    Mat sixy(covs.at(i), Rect(25, 0, 3, 25));
+    Mat sixy(covs.at(i), Rect(24, 0, 3, 24));
     sxy.push_back(sixy);
-    Mat siyx(covs.at(i), Rect(0, 25, 25, 3));
+    Mat siyx(covs.at(i), Rect(0, 24, 24, 3));
     syx.push_back(siyx);
-    Mat siyy(covs.at(i), Rect(25, 25, 3, 3));
+    Mat siyy(covs.at(i), Rect(24, 24, 3, 3));
     syy.push_back(siyy);
   }
 
