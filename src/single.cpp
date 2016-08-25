@@ -45,7 +45,7 @@ std::vector<Mat>* buildLPyramid(std::vector<Mat>* pyrH, float scale_factor)
     int w = (int) (hmi.rows * scale_factor);
 
     resize(hmi, lmi, Size(h, w), CV_INTER_CUBIC);
-    pyrL->insert(pyrL->begin(), lmi);
+    pyrL->push_back(lmi);
   }
   pyrH->pop_back();
 
@@ -127,16 +127,17 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
 
   for(int l = 0; l < pyrH->size(); ++l)
   {
-    Mat hi = pyrH->at(l);
-    Mat li = pyrL->at(l + 1);
+    Mat* hi = &pyrH->at(l);
+    Mat* li = &pyrL->at(l + 1);
 
-    std::cout << " DIM " << hi.cols << "  " << hi.rows << " " << hi.channels() << std::endl;
-    for(int  i = 0; i < hi.rows - 1; ++i)
+    std::cout << " DIM HI " << hi->cols << "  " << hi->rows << " " << hi->channels() << std::endl;
+    std::cout << " DIM LI " << li->cols << "  " << li->rows << " " << li->channels() << std::endl;
+    for(int  i = 0; i < hi->rows - 1; ++i)
     {
-      for (int  j = 0; j < hi.cols - 1; ++j)
+      for (int  j = 0; j < hi->cols - 1; ++j)
       {
-        copyCell(&hi, &samples, i, j, sample_index, 0);
-        setNeighborhood(&li, &samples, i, j, sample_index);
+        copyCell(hi, &samples, i, j, sample_index, 0);
+        setNeighborhood(li, &samples, i, j, sample_index);
         sample_index++;
       }
     }
