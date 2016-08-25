@@ -6,6 +6,13 @@
 
 #include <vector>
 
+
+#define ASSERT_EX(condition, statement) \
+    do { \
+        if (!(condition)) { statement; assert(condition); } \
+    } while (false)
+
+
 using namespace cv;
 
 std::vector<Mat>* buildHPyramid(Mat h0, float scale_factor, int levels)
@@ -57,6 +64,12 @@ int getSampleSize(std::vector<Mat>* pyrH)
 
 void copyCell(Mat* src, Mat* dst, int is, int js, int id, int jd)
 {
+
+  ASSERT_EX((is >= 0 && is < src->rows), std::cout << "IS" << is << std::endl);
+  ASSERT_EX((js >= 0 && is < src->cols), std::cout << "JS" << js << std::endl);
+  ASSERT_EX((id >= 0 && id + 3 < dst->rows), std::cout << "ID" << id + 3 << std::endl);
+  ASSERT_EX((jd >= 0 && jd + 3 < dst->cols), std::cout << "JD" << jd + 3 << std::endl);
+
   Vec3b color = src->at<Vec3b>(Point(is, js));
   for (int c = 0; c < src->channels(); ++c)
   {
@@ -137,7 +150,7 @@ std::vector<Mat> getUx(Mat means)
   std::vector<Mat> ux;
   for (int i = 0; i < means.rows; i++)
   {
-    Mat uix(means, Rect(0, i, 3, 1));
+    Mat uix(means, Rect(0, i, 25, 1));
     ux.push_back(uix);
   }
   return ux;
@@ -148,7 +161,7 @@ std::vector<Mat> getUy(Mat means)
   std::vector<Mat> uy;
   for (int i = 0; i < means.rows; i++)
   {
-    Mat uiy(means, Rect(3, i, 25, 1));
+    Mat uiy(means, Rect(25, i, 3, 1));
     uy.push_back(uiy);
   }
   return uy;
@@ -202,15 +215,15 @@ int main(int argc, char** argv) {
   std::vector<Mat> syy;
 
 
-  for (int i = 0; i < covs.size(); i++)
+  for (unsigned int i = 0; i < covs.size(); i++)
   {
-    Mat sixx(covs.at(i), Rect(0, 0, 3, 3));
+    Mat sixx(covs.at(i), Rect(0, 0, 25, 25));
     sxx.push_back(sixx);
-    Mat sixy(covs.at(i), Rect(3, 0, 5, 3));
+    Mat sixy(covs.at(i), Rect(25, 0, 3, 25));
     sxy.push_back(sixy);
-    Mat siyx(covs.at(i), Rect(0, 3, 3, 25));
+    Mat siyx(covs.at(i), Rect(0, 25, 25, 3));
     syx.push_back(siyx);
-    Mat siyy(covs.at(i), Rect(3, 3, 25, 25));
+    Mat siyy(covs.at(i), Rect(25, 25, 3, 3));
     syy.push_back(siyy);
   }
 
