@@ -15,7 +15,7 @@ GaussianRegressor::GaussianRegressor(EM model)
 
 
   n_component = (unsigned int) wgt.cols;
-  for (unsigned int i = 0; i < wgt.cols; i++)
+  for (int i = 0; i < wgt.cols; i++)
   {
     weights.push_back(wgt.at<uchar>(i));
   }
@@ -69,12 +69,6 @@ Vec3b GaussianRegressor::estimate(Mat sample)
   for (unsigned int i = 0; i < betas.size(); i++)
   {
     Vec3b Muiysx = computeMuysx(sample, meansX.at(i), meansY.at(i), covsYX.at(i), covsXX.at(i));
-    /*
-    std::cout << "beta " <<betas.at(i) << std::endl;
-    std::cout << "Mu y|x [0] " <<  Muiysx[0] << std::endl;
-    std::cout << "Mu y|x [1] " << Muiysx[1] << std::endl;
-    std::cout << "Mu y|x [2] " << Muiysx[2] << std::endl;
-     */
     estimate[0] += betas.at(i) * Muiysx[0];
     estimate[1] += betas.at(i) * Muiysx[1];
     estimate[2] += betas.at(i) * Muiysx[2];
@@ -85,8 +79,6 @@ Vec3b GaussianRegressor::estimate(Mat sample)
 
 double GaussianRegressor::computeProbPdf(Mat samples, Mat cov, Mat mean)
 {
-  //std::cout << (cov.type() == CV_64FC1) << std::endl;
-  //std::cout << cov.rows << " " << cov.cols << std::endl;
   int dim = cov.rows;
   double det = determinant(cov);
   double scale = 1.0 / (pow(2 * M_PI * det * dim, 0.5));
@@ -98,21 +90,13 @@ double GaussianRegressor::computeProbPdf(Mat samples, Mat cov, Mat mean)
 
 Vec3b GaussianRegressor::computeMuysx(Mat sample, Mat meanX, Mat meanY, Mat covYX, Mat covXX)
 {
-  /*
-  std::cout << "meanY " << meanY.rows << " " << meanY.cols << std::endl;
-  std::cout << "meanX " << meanX.rows << " " << meanX.cols << std::endl;
-  std::cout << "covYX " << covYX.rows << " " << covYX.cols << std::endl;
-  std::cout << "covXX " << covXX.rows << " " << covXX.cols << std::endl;
-  std::cout << "sample " << sample.rows << " " << sample.cols << std::endl;
-   */
   Mat tmp1 = meanX.t() - sample;
-  //std::cout << "meanX - sample.t() " << tmp1.rows << " " << tmp1.cols << std::endl;
   Mat tmp2 = covYX * covXX.inv();
-  //std::cout << "covYX * covXX.inv() " << tmp2.rows << " " << tmp2.cols << std::endl;
   Mat tmp3 = tmp2 * tmp1;
-  //std::cout << "tmp1 * tmp2 " << tmp3.rows << " " << tmp3.cols << std::endl;
   Mat Muysx = meanY - tmp3.t();
+
   Vec3b ret(Muysx.at<uchar>(0), Muysx.at<uchar>(1), Muysx.at<uchar>(2));
+
   return ret;
 }
 
@@ -128,7 +112,8 @@ std::vector<double> GaussianRegressor::computeBetas(Mat sample)
 
   for (unsigned int i = 0; i < n_component; i++)
   {
-    betas.push_back(weights[i] * computeProbPdf(sample, covsXX.at(i), meansX.at(i)) / denom);
+    double beta = weights[i] * computeProbPdf(sample, covsXX.at(i), meansX.at(i)) / denom;
+    betas.push_back(beta);
   }
 
   return betas;

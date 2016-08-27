@@ -56,16 +56,10 @@ int getSampleSize(std::vector<Mat>* pyrH)
 
 void copyCell(Mat* src, Mat* dst, int is, int js, int id, int jd)
 {
-
-  ASSERT_EX((is >= 0 && is < src->rows), std::cout << "IS" << is << std::endl);
-  ASSERT_EX((js >= 0 && js < src->cols), std::cout << "JS" << js << std::endl);
-  ASSERT_EX((id >= 0 && id + 3 < dst->rows), std::cout << "ID" << id + 3 << std::endl);
-  ASSERT_EX((jd >= 0 && jd + 3 < dst->cols), std::cout << "JD" << jd + 3 << std::endl);
-
   Vec3b color = src->at<Vec3b>(is, js);
   for (int c = 0; c < src->channels(); ++c)
   {
-    dst->at<uchar>(id, jd + c) = color[0];
+    dst->at<uchar>(id, jd + c) = color[c];
   }
 }
 
@@ -94,12 +88,12 @@ void setNeighborhood(Mat* src, Mat* dst, int row, int col, int sample_index)
       if (i == 1 && j == 1)
         continue;
       if (isInBounds(src, row + i, col + j)) {
-        copyCell(src, dst, row + i, col + j, sample_index, index);
+        copyCell(src, dst, row + i, col + j, sample_index, index + 3);
       }
       else
       {
         Vec3b color(0, 0, 0);
-        setCell(dst, sample_index, index, color);
+        setCell(dst, sample_index, index + 3, color);
       }
       index += 3;
     }
@@ -184,12 +178,13 @@ int main(void) {
 
   Mat samples = buildSampleData(pyrH, pyrL);
 
+  int n_component = 5;
+  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 25, 100));
 
 
-  EM model(7, EM::COV_MAT_GENERIC, TermCriteria(TermCriteria::COUNT + TermCriteria::EPS, 10, 10));
-
+  Mat log_likelihoods;
   std::cout << "model created" << std::endl;
-  model.train(samples);
+  model.train(samples, log_likelihoods);
 
   if (model.isTrained()){
     std::cout << "model trained" << std::endl;
@@ -197,6 +192,10 @@ int main(void) {
     std::cout << "model not trained" << std::endl;
   }
 
+  for(int j = 0; j < n_component; j++ )
+  {
+    std::cout << log_likelihoods.at<double>(j) << std::endl;
+  }
 
   GaussianRegressor* gr = new GaussianRegressor(model);
 
@@ -212,9 +211,55 @@ int main(void) {
     }
   }
 
-  imshow("HR Result", Hr);
+
+  // Some testing to see what is the effect on the output image
+
+  bool flattening = true;
+  bool clipping = false;
+
+  if (flattening) {
+    Mat bgr[3];   //destination array
+    split(Hr, bgr);
+
+    std::vector<Mat> colors;
+
+    for (int i = 0; i < 3; i++) {
+      double min, max;
+      minMaxLoc(bgr[i], &min, &max);
+      double OldRange = (max - min);
+      double NewRange = 255.0;
+      bgr[i] = (((bgr[i] - min) * NewRange) / OldRange);
+      colors.push_back(bgr[i]);
+    }
+    merge(colors, Hr);
+  }
+
+  if (clipping) {
+    for (int i = 0; i < Hr.rows; i++) {
+      for (int j = 0; j < Hr.cols; j++) {
+        Vec3b color = Hr.at<Vec3b>(i, j);
+        if (color[0] < 0)
+          color[0] = 0;
+        if (color[1] < 0)
+          color[1] = 0;
+        if (color[2] < 0)
+          color[2] = 0;
+        if (color[0] > 255)
+          color[0] = 255;
+        if (color[1] > 255)
+          color[1] = 0;
+        if (color[2] > 255)
+          color[2] = 255;
+        Hr.at<Vec3b>(i, j) = color;
+      }
+    }
+  }
+
+
   imshow("Interp", Lm);
+  imshow("HR Result", Hr);
   waitKey(0);
+
   return 0;
 
 }
