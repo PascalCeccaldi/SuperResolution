@@ -20,7 +20,6 @@ void* OutputFilter::operator()(void* tok)
 
   char buf[100];
   sprintf(buf, "frames/%03d.jpg", counter); // Make sure directory 'frames' exists.
-  counter++;
   // cvWrite
 
   cvSaveImage(buf, img);

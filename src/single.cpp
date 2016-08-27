@@ -1,11 +1,4 @@
-#include <opencv2/core/core.hpp>
-#include <opencv2/ml/ml.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <iostream>
-
-#include <vector>
-
+#include "GaussianRegression.h"
 
 #define ASSERT_EX(condition, statement) \
     do { \
@@ -37,7 +30,6 @@ std::vector<Mat>* buildLPyramid(std::vector<Mat>* pyrH, float scale_factor)
 {
 
   std::vector<Mat>* pyrL = new std::vector<Mat>();
-  int i = 0;
   for (Mat hmi: *pyrH)
   {
     Mat lmi;
@@ -93,7 +85,7 @@ bool isInBounds(Mat* src, int i, int j)
 }
 
 
-int setNeighborhood(Mat* src, Mat* dst, int row, int col, int sample_index)
+void setNeighborhood(Mat* src, Mat* dst, int row, int col, int sample_index)
 {
   int index = 0;
   for (int i = 0; i < 3; ++i)
@@ -114,6 +106,28 @@ int setNeighborhood(Mat* src, Mat* dst, int row, int col, int sample_index)
   }
 }
 
+Mat getNeighborhood(Mat* src, int row, int col)
+{
+  int index = 0;
+  Mat res(24, 1, CV_64FC1);
+  for (int i = 0; i < 3; ++i)
+  {
+    for (int j = 0; j < 3; ++j) {
+      if (i == 1 && j == 1)
+        continue;
+      if (isInBounds(src, row + i, col + j)) {
+        res.at<uchar>(index) = src->at<uchar>(row + i, col + j);
+      }
+      else
+      {
+        res.at<uchar>(index) = 0;
+      }
+      index += 3;
+    }
+  }
+  return res;
+}
+
 Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
 {
 
@@ -121,11 +135,9 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
   Mat samples(getSampleSize(pyrH), 27, CV_8UC1);
 
 
-  int channels = first.channels();
-
   int sample_index = 0;
 
-  for(int l = 0; l < pyrH->size(); ++l)
+  for(unsigned int l = 0; l < pyrH->size(); ++l)
   {
     Mat* hi = &pyrH->at(l);
     Mat* li = &pyrL->at(l + 1);
@@ -145,31 +157,14 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
   return samples;
 }
 
-std::vector<Mat> getUx(Mat means)
-{
-  std::vector<Mat> ux;
-  for (int i = 0; i < means.rows; i++)
-  {
-    Mat uix(means, Rect(0, i, 24, 1));
-    ux.push_back(uix);
-  }
-  return ux;
-}
 
-std::vector<Mat> getUy(Mat means)
-{
-  std::vector<Mat> uy;
-  for (int i = 0; i < means.rows; i++)
-  {
-    Mat uiy(means, Rect(24, i, 3, 1));
-    uy.push_back(uiy);
-  }
-  return uy;
-}
 
-int main(int argc, char** argv) {
 
-  std::string window_name = "image";
+
+
+
+int main(void) {
+
   float scale_factor = 2;
   int levels = 2;
 
@@ -202,38 +197,24 @@ int main(int argc, char** argv) {
     std::cout << "model not trained" << std::endl;
   }
 
-  const vector<Mat>& covs  = model.get<vector<Mat>>("covs");
-  const Mat means  = model.get<Mat>("means");
-  const Mat weights  = model.get<Mat>("weights");
-  std::vector<Mat> ux = getUx(means);
-  std::vector<Mat> uy = getUy(means);
 
+  GaussianRegressor* gr = new GaussianRegressor(model);
 
-  std::vector<Mat> sxx;
-  std::vector<Mat> sxy;
-  std::vector<Mat> syx;
-  std::vector<Mat> syy;
-
-
-  for (unsigned int i = 0; i < covs.size(); i++)
+  Mat Lm = *pyrL->begin();
+  Mat Hr(Lm.rows, Lm.cols, CV_8UC3);
+  for (int i = 0; i < Lm.rows; i++)
   {
-    Mat sixx(covs.at(i), Rect(0, 0, 24, 24));
-    sxx.push_back(sixx);
-    Mat sixy(covs.at(i), Rect(24, 0, 3, 24));
-    sxy.push_back(sixy);
-    Mat siyx(covs.at(i), Rect(0, 24, 24, 3));
-    syx.push_back(siyx);
-    Mat siyy(covs.at(i), Rect(24, 24, 3, 3));
-    syy.push_back(siyy);
+    for (int j = 0; j < Lm.cols; j++)
+    {
+      Mat sample = getNeighborhood(&Lm, i, j);
+      Vec3b px = gr->estimate(sample);
+      Hr.at<Vec3b>(i, j) = px;
+    }
   }
 
-
-  std::cout << covs.at(0).rows << " " << covs.at(0).cols << std::endl;
-  std::cout << means.rows << " " << means.cols << std::endl;
-  std::cout << weights.rows << " " << weights.cols << std::endl;
-  std::cout << weights << std::endl;
-
-
+  imshow("HR Result", Hr);
+  imshow("Interp", Lm);
+  waitKey(0);
   return 0;
 
 }
