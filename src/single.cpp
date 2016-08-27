@@ -59,7 +59,7 @@ void copyCell(Mat* src, Mat* dst, int is, int js, int id, int jd)
   Vec3b color = src->at<Vec3b>(is, js);
   for (int c = 0; c < src->channels(); ++c)
   {
-    dst->at<uchar>(id, jd + c) = color[c];
+    dst->at<double>(id, jd + c) = color[c];
   }
 }
 
@@ -67,7 +67,7 @@ void setCell(Mat* dst, int row, int col, Vec3b value)
 {
   for (int c = 0; c < 3; ++c)
   {
-    dst->at<uchar>(row, col + c) = value[c];
+    dst->at<double>(row, col + c) = value[c];
   }
 }
 
@@ -110,11 +110,16 @@ Mat getNeighborhood(Mat* src, int row, int col)
       if (i == 1 && j == 1)
         continue;
       if (isInBounds(src, row + i, col + j)) {
-        res.at<uchar>(index) = src->at<uchar>(row + i, col + j);
+        Vec3b color = src->at<Vec3b>(row + i, col + j);
+        res.at<double>(index) = color[0];
+        res.at<double>(index + 1) = color[1];
+        res.at<double>(index + 2) = color[2];
       }
       else
       {
-        res.at<uchar>(index) = 0;
+        res.at<double>(index) = 0;
+        res.at<double>(index + 1) = 0;
+        res.at<double>(index + 2) = 0;
       }
       index += 3;
     }
@@ -126,7 +131,7 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
 {
 
   Mat first = *pyrH->begin();
-  Mat samples(getSampleSize(pyrH), 27, CV_8UC1);
+  Mat samples(getSampleSize(pyrH), 27, CV_64FC1);
 
 
   int sample_index = 0;
@@ -181,7 +186,6 @@ int main(void) {
   int n_component = 5;
   EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 25, 100));
 
-
   Mat log_likelihoods;
   std::cout << "model created" << std::endl;
   model.train(samples, log_likelihoods);
@@ -206,7 +210,9 @@ int main(void) {
     for (int j = 0; j < Lm.cols; j++)
     {
       Mat sample = getNeighborhood(&Lm, i, j);
+      //std::cout << "SAMPLE " << sample << std::endl << std::endl;
       Vec3b px = gr->estimate(sample);
+      //std::cout << "ESTIMATE " << px << std::endl;
       Hr.at<Vec3b>(i, j) = px;
     }
   }
@@ -214,7 +220,7 @@ int main(void) {
 
   // Some testing to see what is the effect on the output image
 
-  bool flattening = true;
+  bool flattening = false;
   bool clipping = false;
 
   if (flattening) {

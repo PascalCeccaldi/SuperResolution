@@ -37,6 +37,13 @@ GaussianRegressor::GaussianRegressor(EM model)
     assert(siyy.rows == siyy.cols);
     covsYY.push_back(siyy);
   }
+
+  std::cout << meansX.at(0) << std::endl << std::endl;
+  std::cout << meansY.at(0) << std::endl << std::endl;
+
+  std::cout << covsYY.at(0) << std::endl << std::endl;
+  std::cout << covsXX.at(0) << std::endl << std::endl;
+
 }
 
 std::vector<Mat> GaussianRegressor::buildMeansX(Mat means)
@@ -69,10 +76,15 @@ Vec3b GaussianRegressor::estimate(Mat sample)
   for (unsigned int i = 0; i < betas.size(); i++)
   {
     Vec3b Muiysx = computeMuysx(sample, meansX.at(i), meansY.at(i), covsYX.at(i), covsXX.at(i));
+
     estimate[0] += betas.at(i) * Muiysx[0];
     estimate[1] += betas.at(i) * Muiysx[1];
     estimate[2] += betas.at(i) * Muiysx[2];
   }
+
+
+  //std::cout << "ESTIMATE " << estimate << std::endl;
+  //std::cout << "SAMPLE " << sample << std::endl;
 
   return estimate;
 }
