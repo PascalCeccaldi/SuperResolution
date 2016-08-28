@@ -141,8 +141,6 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
     Mat* hi = &pyrH->at(l);
     Mat* li = &pyrL->at(l + 1);
 
-    std::cout << " DIM HI " << hi->cols << "  " << hi->rows << " " << hi->channels() << std::endl;
-    std::cout << " DIM LI " << li->cols << "  " << li->rows << " " << li->channels() << std::endl;
     for(int  i = 0; i < hi->rows - 1; ++i)
     {
       for (int  j = 0; j < hi->cols - 1; ++j)
@@ -179,27 +177,13 @@ int main(void) {
   std::vector<Mat>* pyrH = buildHPyramid(h0, scale_factor, levels);
   std::vector<Mat>* pyrL = buildLPyramid(pyrH, scale_factor);
 
-  std::cout << pyrH->size() << " " << pyrL->size() << std::endl;
-
   Mat samples = buildSampleData(pyrH, pyrL);
 
   int n_component = 5;
-  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 25, 1));
+  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 0.01));
 
   Mat log_likelihoods;
-  std::cout << "model created" << std::endl;
   model.train(samples, log_likelihoods);
-
-  if (model.isTrained()){
-    std::cout << "model trained" << std::endl;
-  } else {
-    std::cout << "model not trained" << std::endl;
-  }
-
-  for(int j = 0; j < n_component; j++ )
-  {
-    std::cout << log_likelihoods.at<double>(j) << std::endl;
-  }
 
   GaussianRegressor* gr = new GaussianRegressor(model);
 
@@ -219,12 +203,12 @@ int main(void) {
     waitKey(1);
   }
 
-  std::cout << "HR processing done " << std::endl;
-
-
   imshow("Interp", Lm);
   imshow("HR Result", Hr);
   waitKey(0);
+  imwrite("interp.jpg", Lm);
+
+  imwrite("SrGMM.jpg", Hr);
 
   return 0;
 
