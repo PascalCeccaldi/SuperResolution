@@ -15,9 +15,16 @@ GaussianRegressor::GaussianRegressor(EM model)
 
 
   n_component = (unsigned int) wgt.cols;
+  double sum = 0;
   for (int i = 0; i < wgt.cols; i++)
   {
-    weights.push_back(wgt.at<uchar>(i));
+    sum += wgt.at<double>(i);
+    weights.push_back(wgt.at<double>(i));
+  }
+
+  for (int i = 0; i < wgt.cols; i++)
+  {
+    weights.push_back(wgt.at<double>(i) / sum);
   }
 
   meansX = buildMeansX(means);
@@ -37,12 +44,6 @@ GaussianRegressor::GaussianRegressor(EM model)
     assert(siyy.rows == siyy.cols);
     covsYY.push_back(siyy);
   }
-
-  std::cout << meansX.at(0) << std::endl << std::endl;
-  std::cout << meansY.at(0) << std::endl << std::endl;
-
-  std::cout << covsYY.at(0) << std::endl << std::endl;
-  std::cout << covsXX.at(0) << std::endl << std::endl;
 
 }
 
@@ -76,7 +77,9 @@ Vec3b GaussianRegressor::estimate(Mat sample)
   for (unsigned int i = 0; i < betas.size(); i++)
   {
     Vec3b Muiysx = computeMuysx(sample, meansX.at(i), meansY.at(i), covsYX.at(i), covsXX.at(i));
-
+    //std::cout << "BETA " << betas.at(i) << std::endl;
+    //std::cout << "MU " << Muiysx << std::endl;
+    double beta = 1 / betas.size();
     estimate[0] += betas.at(i) * Muiysx[0];
     estimate[1] += betas.at(i) * Muiysx[1];
     estimate[2] += betas.at(i) * Muiysx[2];
@@ -93,11 +96,17 @@ double GaussianRegressor::computeProbPdf(Mat samples, Mat cov, Mat mean)
 {
   int dim = cov.rows;
   double det = determinant(cov);
-  double scale = 1.0 / (pow(2 * M_PI * det * dim, 0.5));
+  double scale = 1.0 / (pow(pow(2 * M_PI, dim) * det, 0.5));
   Mat invcov = cov.inv();
-  Mat tmp1 = samples * mean;
+  //std::cout << "MEAN " << mean.rows << " " << mean.cols << std::endl;
+  //std::cout << "samples " << samples.rows << " " << samples.cols << std::endl;
+  Mat tmp1 = samples.t() - mean;
+  //std::cout << "INV " << invcov.rows << " " << invcov.cols << std::endl;
+  //std::cout << "TMP1 " << tmp1.rows << " " << tmp1.cols << std::endl;
   Mat tmp2 = tmp1 * invcov * tmp1.t();
-  return scale * tmp2.at<double>(0, 0);
+  //std::cout << "TMP2 " << tmp2 << std::endl;
+  //std::cout << "PROB " << scale * exp((- 1 / 2 )* tmp2.at<double>(0, 0)) << std::endl;
+  return scale * exp((- 1 / 2 ) * tmp2.at<double>(0, 0));
 }
 
 Vec3b GaussianRegressor::computeMuysx(Mat sample, Mat meanX, Mat meanY, Mat covYX, Mat covXX)
@@ -124,8 +133,8 @@ std::vector<double> GaussianRegressor::computeBetas(Mat sample)
 
   for (unsigned int i = 0; i < n_component; i++)
   {
-    double beta = weights[i] * computeProbPdf(sample, covsXX.at(i), meansX.at(i)) / denom;
-    betas.push_back(beta);
+    double beta = weights[i] * computeProbPdf(sample, covsXX.at(i), meansX.at(i));
+    betas.push_back(beta / denom);
   }
 
   return betas;

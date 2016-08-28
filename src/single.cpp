@@ -168,7 +168,7 @@ int main(void) {
   int levels = 2;
 
   Mat h0;
-  h0 = imread("012.jpg", CV_LOAD_IMAGE_COLOR);
+  h0 = imread("013.jpg", CV_LOAD_IMAGE_COLOR);
 
   if(! h0.data )
   {
@@ -204,7 +204,7 @@ int main(void) {
   GaussianRegressor* gr = new GaussianRegressor(model);
 
   Mat Lm = *pyrL->begin();
-  Mat Hr(Lm.rows, Lm.cols, CV_8UC3);
+  Mat Hr(Lm.rows, Lm.cols, CV_8UC3, double(0));
   for (int i = 0; i < Lm.rows; i++)
   {
     for (int j = 0; j < Lm.cols; j++)
@@ -215,6 +215,8 @@ int main(void) {
       //std::cout << "ESTIMATE " << px << std::endl;
       Hr.at<Vec3b>(i, j) = px;
     }
+    imshow("HR Result", Hr);
+    waitKey(1);
   }
 
 
@@ -260,6 +262,8 @@ int main(void) {
       }
     }
   }
+
+  std::cout << "HR processing done " << std::endl;
 
 
   imshow("Interp", Lm);
