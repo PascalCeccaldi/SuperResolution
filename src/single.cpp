@@ -168,7 +168,7 @@ int main(void) {
   int levels = 2;
 
   Mat h0;
-  h0 = imread("013.jpg", CV_LOAD_IMAGE_COLOR);
+  h0 = imread("012.jpg", CV_LOAD_IMAGE_COLOR);
 
   if(! h0.data )
   {
@@ -184,7 +184,7 @@ int main(void) {
   Mat samples = buildSampleData(pyrH, pyrL);
 
   int n_component = 5;
-  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 25, 100));
+  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 25, 1));
 
   Mat log_likelihoods;
   std::cout << "model created" << std::endl;
@@ -210,57 +210,13 @@ int main(void) {
     for (int j = 0; j < Lm.cols; j++)
     {
       Mat sample = getNeighborhood(&Lm, i, j);
-      //std::cout << "SAMPLE " << sample << std::endl << std::endl;
-      Vec3b px = gr->estimate(sample);
-      //std::cout << "ESTIMATE " << px << std::endl;
-      Hr.at<Vec3b>(i, j) = px;
+      Vec3d px = gr->estimate(sample);
+
+      Vec3b v0(ceil(px[0]), ceil(px[1]), ceil(px[2]));
+      Hr.at<Vec3b>(i, j) = v0;
     }
     imshow("HR Result", Hr);
     waitKey(1);
-  }
-
-
-  // Some testing to see what is the effect on the output image
-
-  bool flattening = false;
-  bool clipping = false;
-
-  if (flattening) {
-    Mat bgr[3];   //destination array
-    split(Hr, bgr);
-
-    std::vector<Mat> colors;
-
-    for (int i = 0; i < 3; i++) {
-      double min, max;
-      minMaxLoc(bgr[i], &min, &max);
-      double OldRange = (max - min);
-      double NewRange = 255.0;
-      bgr[i] = (((bgr[i] - min) * NewRange) / OldRange);
-      colors.push_back(bgr[i]);
-    }
-    merge(colors, Hr);
-  }
-
-  if (clipping) {
-    for (int i = 0; i < Hr.rows; i++) {
-      for (int j = 0; j < Hr.cols; j++) {
-        Vec3b color = Hr.at<Vec3b>(i, j);
-        if (color[0] < 0)
-          color[0] = 0;
-        if (color[1] < 0)
-          color[1] = 0;
-        if (color[2] < 0)
-          color[2] = 0;
-        if (color[0] > 255)
-          color[0] = 255;
-        if (color[1] > 255)
-          color[1] = 0;
-        if (color[2] > 255)
-          color[2] = 255;
-        Hr.at<Vec3b>(i, j) = color;
-      }
-    }
   }
 
   std::cout << "HR processing done " << std::endl;

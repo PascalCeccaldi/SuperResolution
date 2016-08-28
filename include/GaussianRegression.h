@@ -12,7 +12,7 @@ class GaussianRegressor {
   public:
 
     GaussianRegressor(EM model);
-    Vec3b estimate(Mat sample);
+    Vec3d estimate(Mat sample);
 
 
   private:
@@ -20,7 +20,7 @@ class GaussianRegressor {
     std::vector<Mat> buildMeansX(Mat means);
     std::vector<Mat> buildMeansY(Mat means);
     std::vector<double> computeBetas(Mat sample);
-    Vec3b computeMuysx(Mat sample, Mat meanX, Mat meanY, Mat covYX, Mat covXX);
+    Vec3d computeMuysx(Mat sample, Mat meanX, Mat meanY, Mat covYX, Mat covXX);
     double computeProbPdf(Mat samples, Mat cov, Mat mean);
 
 
