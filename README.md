@@ -11,19 +11,18 @@ It implements an algorithm proposed here [Single Image Super-Resolution - He et 
 
 ### Single image output :
 
-[[https://github.com/PascalCeccaldi/ParallelImages/blob/master/img/est01.jpg|alt=est01]]
+![alt est01](https://github.com/PascalCeccaldi/ParallelImages/blob/master/img/est01.jpg)
 
 ### Bicubic interpolated :
 
-[[https://github.com/PascalCeccaldi/ParallelImages/blob/master/img/interp01.jpg|alt=interp01]]
+![alt interp01](https://github.com/PascalCeccaldi/ParallelImages/blob/master/img/interp01.jpg)
 
 
 ### Zoomed
 
-[[https://github.com/PascalCeccaldi/ParallelImages/blob/master/img/zoom_est01.jpg|alt=zoom_est01]]
+[alt zoom_est01](https://github.com/PascalCeccaldi/ParallelImages/blob/master/img/zoom_est01.jpg)
 
-[[https://github.com/PascalCeccaldi/ParallelImages/blob/master/img/zoom_interp01.jpg|alt=zoom_interp01]]
-
+![alt zoom_interp01](https://github.com/PascalCeccaldi/ParallelImages/blob/master/img/zoom_interp01.jpg)
 
 
 ## Notes
