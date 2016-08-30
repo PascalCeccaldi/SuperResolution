@@ -21,7 +21,6 @@ It implements an algorithm proposed here [Single Image Super-Resolution - He et 
 ### Zoomed
 
 ![alt zoom_est01](https://github.com/PascalCeccaldi/ParallelImages/blob/master/img/zoom_est01.jpg)
->>>>>>> Updated Readme
 
 ![alt zoom_interp01](https://github.com/PascalCeccaldi/ParallelImages/blob/master/img/zoom_interp01.jpg)
 
