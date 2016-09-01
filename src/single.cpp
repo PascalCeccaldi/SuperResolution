@@ -163,10 +163,10 @@ Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
 int main(void) {
 
   float scale_factor = 2;
-  int levels = 2;
+  int levels = 3;
 
   Mat h0;
-  h0 = imread("012.jpg", CV_LOAD_IMAGE_COLOR);
+  h0 = imread("013.jpg", CV_LOAD_IMAGE_COLOR);
 
   if(! h0.data )
   {
@@ -179,8 +179,8 @@ int main(void) {
 
   Mat samples = buildSampleData(pyrH, pyrL);
 
-  int n_component = 5;
-  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 0.01));
+  int n_component = 3;
+  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 5, 10000));
 
   Mat log_likelihoods;
   model.train(samples, log_likelihoods);

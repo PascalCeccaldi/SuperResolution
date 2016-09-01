@@ -77,10 +77,19 @@ Vec3d GaussianRegressor::estimate(Mat sample)
 
 double GaussianRegressor::computeProbPdf(Mat samples, Mat cov, Mat mean)
 {
-  int dim = cov.rows;
-  double det = determinant(cov);
+  Mat pos_cov;
+  if (determinant(cov) == 0) {
+    Mat offset = Mat::eye(cov.rows, cov.cols, cov.type()) * FLT_EPSILON;
+    pos_cov = cov + offset;
+  } else {
+    pos_cov = cov;
+  }
+  int dim = pos_cov.rows;
+  double det = determinant(pos_cov);
+  //std::cout << "DET " << det << std::endl << std::endl;
   double scale = 1.0 / ((pow(2 * M_PI, dim / 2.0) * pow(det, 0.5)));
-  Mat invcov = cov.inv();
+  //std::cout << "SCALE " << scale << std::endl << std::endl;
+  Mat invcov = pos_cov.inv();
   Mat tmp1 = samples - mean.t();
   Mat tmp2 = tmp1.t() * invcov * tmp1;
   return exp(log(scale) + (- 1 / 2) * tmp2.at<double>(0, 0));
@@ -111,7 +120,7 @@ std::vector<double> GaussianRegressor::computeBetas(Mat sample)
   for (unsigned int i = 0; i < n_component; i++)
   {
     double beta = weights[i] * computeProbPdf(sample, covsXX.at(i), meansX.at(i));
-    std::cout << "BETA " << beta << std::endl << std::endl;
+
     betas.push_back(beta / denom);
   }
 
