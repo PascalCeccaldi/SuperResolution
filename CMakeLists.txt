@@ -19,8 +19,8 @@ include_directories(${TBB_INCLUDE_DIRS})
 
 add_definitions(${TBB_DEFINITIONS})
 
-add_executable(StreamFilterApp src/main.cpp src/ErodeFilter.cpp  src/inputFilter.cpp src/outputFilter.cpp src/GaussianRegression.cpp)
-add_executable(sres src/single.cpp src/GaussianRegression.cpp)
+add_executable(StreamFilterApp src/main.cpp src/ErodeFilter.cpp  src/inputFilter.cpp src/outputFilter.cpp src/GaussianRegression.cpp src/SRSingleImageGMM.cpp)
+add_executable(sres src/single.cpp src/GaussianRegression.cpp src/SRSingleImageGMM.cpp)
 
 target_link_libraries(StreamFilterApp ${TBB_LIBRARIES} ${OpenCV_LIBS})
 target_link_libraries(sres ${TBB_LIBRARIES} ${OpenCV_LIBS})

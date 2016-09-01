@@ -1,4 +1,4 @@
-#include "GaussianRegression.h"
+#include "GaussianRegression.hh"
 
 using namespace cv;
 
