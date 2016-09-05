@@ -3,7 +3,8 @@
 double getPSNR ( const Mat& I1, const Mat& I2);
 Scalar getMSSIM( const Mat& I1, const Mat& I2);
 
-int main(void) {
+// first arg: 0 no parallel, other parallel
+int main(int argc, char** argv) {
 
   float scale_factor = 2;
   int levels = 3;
@@ -11,7 +12,7 @@ int main(void) {
 
   Mat h0, h1;
   h1 = imread("013.jpg", CV_LOAD_IMAGE_COLOR);
-  imshow("h1", h1);
+
   if(! h1.data )
   {
     std::cout <<  "Could not open or find the image" << std::endl ;
@@ -19,9 +20,10 @@ int main(void) {
   }
 
   pyrDown(h1, h0, Size(h1.cols / scale_factor, h1.rows / scale_factor));
-  imshow("h0", h0);
 
-  Mat Hr = SRSingleImageGMM::predict(h0, scale_factor, levels, n_component);
+  std::cout << *argv[1] << std::endl;
+  int isPara = atoi(argv[1]);
+  Mat Hr = SRSingleImageGMM::predict(h0, scale_factor, levels, n_component, isPara);
 
   imwrite("SrGMM.jpg", Hr);
 

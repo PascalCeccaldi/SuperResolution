@@ -1,5 +1,6 @@
 #include "GaussianRegression.hh"
 #include "SRSingleImageGMM.hh"
+#include "tbb/tbb.h"
 
 using namespace cv;
 
@@ -156,8 +157,48 @@ Mat SRSingleImageGMM::buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* 
   return samples;
 }
 
+class ApplyEstimate {
+    Mat *Hr;
+    Mat *Lm;
+    int i;
+    GaussianRegressor* gr;
+public:
+    void operator()( const tbb::blocked_range<size_t>& r ) const {
+      for( size_t j=r.begin(); j!=r.end(); ++j )
+      {
+        Mat sample = SRSingleImageGMM::getNeighborhood(Lm, i, j);
+        Vec3d px = gr->estimate(sample);
 
-Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_component)
+        if (px[0] > 255)
+          px[0] = 255.0;
+        if (px[1] > 255)
+          px[1] = 255.0;
+        if (px[1] > 255)
+          px[1] = 255.0;
+        if (px[2] > 255)
+          px[2] = 255.0;
+        if (px[0] < 0)
+          px[0] = 0;
+        if (px[1] < 0)
+          px[1] = 0;
+        if (px[1] < 0)
+          px[1] = 0;
+        if (px[2] < 0)
+          px[2] = 0;
+
+        Vec3b v0((uchar) round(px[0]), (uchar) round(px[1]), (uchar) round(px[2]));
+        Hr->at<Vec3b>(i, j) = v0;
+      }
+    }
+    ApplyEstimate(Mat* H, Mat* L, int I, GaussianRegressor* G){
+      Hr = H;
+      Lm = L;
+      i = I;
+      gr = G;
+    }
+};
+
+Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_component, int isPara)
 {
   std::vector<Mat>* pyrH = buildHPyramid(h0, scale_factor, levels);
   std::vector<Mat>* pyrL = buildLPyramid(pyrH, scale_factor);
@@ -173,36 +214,46 @@ Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_comp
 
   Mat Lm = *pyrL->begin();
   Mat Hr(Lm.rows, Lm.cols, CV_8UC3, double(0));
-  for (int i = 0; i < Lm.rows; i++)
+  if (isPara < 1)
   {
-    for (int j = 0; j < Lm.cols; j++)
+    for (int i = 0; i < Lm.rows; i++)
     {
-      Mat sample = getNeighborhood(&Lm, i, j);
-      Vec3d px = gr->estimate(sample);
+      for (int j = 0; j < Lm.cols; j++)
+      {
+        Mat sample = getNeighborhood(&Lm, i, j);
+        Vec3d px = gr->estimate(sample);
 
-      if (px[0] > 255)
-        px[0] = 255.0;
-      if (px[1] > 255)
-        px[1] = 255.0;
-      if (px[1] > 255)
-        px[1] = 255.0;
-      if (px[2] > 255)
-        px[2] = 255.0;
-      if (px[0] < 0)
-        px[0] = 0;
-      if (px[1] < 0)
-        px[1] = 0;
-      if (px[1] < 0)
-        px[1] = 0;
-      if (px[2] < 0)
-        px[2] = 0;
+        if (px[0] > 255)
+          px[0] = 255.0;
+        if (px[1] > 255)
+          px[1] = 255.0;
+        if (px[1] > 255)
+          px[1] = 255.0;
+        if (px[2] > 255)
+          px[2] = 255.0;
+        if (px[0] < 0)
+          px[0] = 0;
+        if (px[1] < 0)
+          px[1] = 0;
+        if (px[1] < 0)
+          px[1] = 0;
+        if (px[2] < 0)
+          px[2] = 0;
 
-      Vec3b v0((uchar) round(px[0]), (uchar) round(px[1]), (uchar) round(px[2]));
-      Hr.at<Vec3b>(i, j) = v0;
+        Vec3b v0((uchar) round(px[0]), (uchar) round(px[1]), (uchar) round(px[2]));
+        Hr.at<Vec3b>(i, j) = v0;
+      }
+      imshow("HR Result", Hr);
+      waitKey(1);
     }
-    imshow("HR Result", Hr);
-    waitKey(1);
+  } else {
+    for (int i = 0; i < Lm.rows; i++)
+    {
+      tbb::parallel_for(tbb::blocked_range<size_t>(0,Lm.cols),
+      ApplyEstimate(&Hr, &Lm, i, &*gr));
+      imshow("HR Result", Hr);
+      waitKey(1);
+    }
   }
-
   return Hr;
 }

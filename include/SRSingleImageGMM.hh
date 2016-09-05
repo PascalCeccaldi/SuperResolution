@@ -7,12 +7,12 @@ class SRSingleImageGMM {
 
   public:
 
-    static Mat predict(Mat h0, float scale_factor, int levels, int n_component);
+    static Mat predict(Mat h0, float scale_factor, int levels, int n_component, int isPara);
+    static Mat getNeighborhood(Mat* src, int row, int col);
 
   private:
 
     static Mat buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL);
-    static Mat getNeighborhood(Mat* src, int row, int col);
     static void setNeighborhood(Mat* src, Mat* dst, int row, int col, int sample_index);
     static void setCell(Mat* dst, int row, int col, Vec3b value);
     static void copyCell(Mat* src, Mat* dst, int is, int js, int id, int jd);
