@@ -39,15 +39,27 @@ std::vector<Mat>* SRSingleImageGMM::buildLPyramid(std::vector<Mat>* pyrH, float 
 {
 
   std::vector<Mat>* pyrL = new std::vector<Mat>();
-  for (Mat hmi: *pyrH)
-  {
-    Mat lmi;
-    int h = (int) (hmi.cols * scale_factor);
-    int w = (int) (hmi.rows * scale_factor);
+  if (isPara < 1){
+    for (Mat hmi: *pyrH)
+    {
+      Mat lmi;
+      int h = (int) (hmi.cols * scale_factor);
+      int w = (int) (hmi.rows * scale_factor);
 
-    resize(hmi, lmi, Size(h, w), CV_INTER_CUBIC);
-    pyrL->push_back(lmi);
+      resize(hmi, lmi, Size(h, w), CV_INTER_CUBIC);
+      pyrL->push_back(lmi);
+    }
+  } else {
+    tbb::parallel_for_each(pyrH->begin(), pyrH->end(), [&](Mat hmi){
+      Mat lmi;
+      int h = (int) (hmi.cols * scale_factor);
+      int w = (int) (hmi.rows * scale_factor);
+
+      resize(hmi, lmi, Size(h, w), CV_INTER_CUBIC);
+      pyrL->push_back(lmi);
+    });
   }
+
   pyrH->pop_back();
 
   return pyrL;
