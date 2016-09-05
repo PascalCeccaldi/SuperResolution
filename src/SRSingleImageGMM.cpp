@@ -5,25 +5,37 @@
 using namespace cv;
 
 
-std::vector<Mat>* SRSingleImageGMM::buildHPyramid(Mat h0, float scale_factor, int levels)
+std::vector<Mat>* SRSingleImageGMM::buildHPyramid(Mat h0, float scale_factor, int levels, int isPara)
 {
   std::vector<Mat>* pyrH = new std::vector<Mat>();
   pyrH->push_back(h0);
   Mat temp = h0;
-  for (int i = 1; i <= levels + 2; ++i) {
-    Mat hmi;
-    int h = (int) (temp.cols / scale_factor);
-    int w = (int) (temp.rows / scale_factor);
-    pyrDown(temp, hmi, Size(h, w));
-    pyrH->push_back(hmi);
-    temp = hmi;
+  if (isPara < 1){
+    for (int i = 1; i <= levels + 2; ++i) {
+      Mat hmi;
+      int h = (int) (temp.cols / scale_factor);
+      int w = (int) (temp.rows / scale_factor);
+      pyrDown(temp, hmi, Size(h, w));
+      pyrH->push_back(hmi);
+      temp = hmi;
+    }
+  } else {
+    tbb::parallel_for(1, levels + 3, [&](int i){
+      Mat hmi;
+      int h = (int) (temp.cols / scale_factor);
+      int w = (int) (temp.rows / scale_factor);
+      pyrDown(temp, hmi, Size(h, w));
+      pyrH->push_back(hmi);
+      temp = hmi;
+    });
   }
+
 
   return pyrH;
 }
 
 
-std::vector<Mat>* SRSingleImageGMM::buildLPyramid(std::vector<Mat>* pyrH, float scale_factor)
+std::vector<Mat>* SRSingleImageGMM::buildLPyramid(std::vector<Mat>* pyrH, float scale_factor, int isPara)
 {
 
   std::vector<Mat>* pyrL = new std::vector<Mat>();
@@ -130,7 +142,7 @@ Mat SRSingleImageGMM::getNeighborhood(Mat* src, int row, int col)
 }
 
 
-Mat SRSingleImageGMM::buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL)
+Mat SRSingleImageGMM::buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* pyrL, int isPara)
 {
 
   Mat first = *pyrH->begin();
@@ -139,71 +151,46 @@ Mat SRSingleImageGMM::buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* 
 
   int sample_index = 0;
 
-  for(unsigned int l = 0; l < pyrH->size(); ++l)
-  {
-    Mat* hi = &pyrH->at(l);
-    Mat* li = &pyrL->at(l + 1);
-
-    for(int  i = 0; i < hi->rows - 1; ++i)
+  if (isPara < 1){
+    for(unsigned int l = 0; l < pyrH->size(); ++l)
     {
-      for (int  j = 0; j < hi->cols - 1; ++j)
+      Mat* hi = &pyrH->at(l);
+      Mat* li = &pyrL->at(l + 1);
+
+      for(int  i = 0; i < hi->rows - 1; ++i)
       {
-        copyCell(hi, &samples, i, j, sample_index, 0);
-        setNeighborhood(li, &samples, i, j, sample_index);
-        sample_index++;
+        for (int  j = 0; j < hi->cols - 1; ++j)
+        {
+          copyCell(hi, &samples, i, j, sample_index, 0);
+          setNeighborhood(li, &samples, i, j, sample_index);
+          sample_index++;
+        }
       }
     }
+  } else {
+    tbb::parallel_for(0, int(pyrH->size()), [&](int l){
+      Mat* hi = &pyrH->at(l);
+      Mat* li = &pyrL->at(l + 1);
+      tbb::parallel_for(0, hi->rows, [&](int i){
+        tbb::parallel_for(0, hi->cols, [&](int j){
+          copyCell(hi, &samples, i, j, sample_index, 0);
+          setNeighborhood(li, &samples, i, j, sample_index);
+          sample_index++;
+        });
+      });
+    });
   }
+
   return samples;
 }
 
-class ApplyEstimate {
-    Mat *Hr;
-    Mat *Lm;
-    int i;
-    GaussianRegressor* gr;
-public:
-    void operator()( const tbb::blocked_range<size_t>& r ) const {
-      for( size_t j=r.begin(); j!=r.end(); ++j )
-      {
-        Mat sample = SRSingleImageGMM::getNeighborhood(Lm, i, j);
-        Vec3d px = gr->estimate(sample);
-
-        if (px[0] > 255)
-          px[0] = 255.0;
-        if (px[1] > 255)
-          px[1] = 255.0;
-        if (px[1] > 255)
-          px[1] = 255.0;
-        if (px[2] > 255)
-          px[2] = 255.0;
-        if (px[0] < 0)
-          px[0] = 0;
-        if (px[1] < 0)
-          px[1] = 0;
-        if (px[1] < 0)
-          px[1] = 0;
-        if (px[2] < 0)
-          px[2] = 0;
-
-        Vec3b v0((uchar) round(px[0]), (uchar) round(px[1]), (uchar) round(px[2]));
-        Hr->at<Vec3b>(i, j) = v0;
-      }
-    }
-    ApplyEstimate(Mat* H, Mat* L, int I, GaussianRegressor* G){
-      Hr = H;
-      Lm = L;
-      i = I;
-      gr = G;
-    }
-};
 
 Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_component, int isPara)
 {
-  std::vector<Mat>* pyrH = buildHPyramid(h0, scale_factor, levels);
-  std::vector<Mat>* pyrL = buildLPyramid(pyrH, scale_factor);
+  std::vector<Mat>* pyrH = buildHPyramid(h0, scale_factor, levels, isPara);
+  std::vector<Mat>* pyrL = buildLPyramid(pyrH, scale_factor, isPara);
 
-  Mat samples = buildSampleData(pyrH, pyrL);
+  Mat samples = buildSampleData(pyrH, pyrL, isPara);
 
   EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 1));
 
@@ -247,13 +234,34 @@ Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_comp
       waitKey(1);
     }
   } else {
-    for (int i = 0; i < Lm.rows; i++)
-    {
-      tbb::parallel_for(tbb::blocked_range<size_t>(0,Lm.cols),
-      ApplyEstimate(&Hr, &Lm, i, &*gr));
+    tbb::parallel_for(0, Lm.rows, [&](int i){
+      tbb::parallel_for(0, Lm.cols, [&](int j){
+        Mat sample = SRSingleImageGMM::getNeighborhood(&Lm, i, j);
+        Vec3d px = gr->estimate(sample);
+
+        if (px[0] > 255)
+          px[0] = 255.0;
+        if (px[1] > 255)
+          px[1] = 255.0;
+        if (px[1] > 255)
+          px[1] = 255.0;
+        if (px[2] > 255)
+          px[2] = 255.0;
+        if (px[0] < 0)
+          px[0] = 0;
+        if (px[1] < 0)
+          px[1] = 0;
+        if (px[1] < 0)
+          px[1] = 0;
+        if (px[2] < 0)
+          px[2] = 0;
+
+        Vec3b v0((uchar) round(px[0]), (uchar) round(px[1]), (uchar) round(px[2]));
+        Hr.at<Vec3b>(i, j) = v0;
+      });
       imshow("HR Result", Hr);
       waitKey(1);
-    }
+    });
   }
   return Hr;
 }

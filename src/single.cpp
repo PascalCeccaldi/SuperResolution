@@ -18,7 +18,8 @@ int main(int argc, char** argv) {
   float scale_factor = 2;
   int levels = 3;
   int n_component = 3;
-
+  int isPara = atoi(argv[1]);
+  
   Mat h0, h1;
   h1 = imread("013.jpg", CV_LOAD_IMAGE_COLOR);
 
@@ -30,7 +31,7 @@ int main(int argc, char** argv) {
 
   pyrDown(h1, h0, Size(h1.cols / scale_factor, h1.rows / scale_factor));
 
-  int isPara = atoi(argv[1]);
+
   timestamp_t t0 = get_timestamp();
   Mat Hr = SRSingleImageGMM::predict(h0, scale_factor, levels, n_component, isPara);
   timestamp_t t1 = get_timestamp();
