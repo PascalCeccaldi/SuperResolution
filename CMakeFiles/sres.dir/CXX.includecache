@@ -21,6 +21,8 @@ tbb/tbb.h
 /home/pascal/Projets/PRPA/parallelImages/src/single.cpp
 SRSingleImageGMM.hh
 /home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.hh
+sys/time.h
+-
 
 include/GaussianRegression.hh
 includes.h

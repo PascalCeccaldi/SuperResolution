@@ -1,7 +1,16 @@
 #include "SRSingleImageGMM.hh"
+#include <sys/time.h>
 
 double getPSNR ( const Mat& I1, const Mat& I2);
 Scalar getMSSIM( const Mat& I1, const Mat& I2);
+
+typedef unsigned long long timestamp_t;
+static timestamp_t get_timestamp ()
+{
+  struct timeval now;
+  gettimeofday (&now, NULL);
+  return  now.tv_usec + (timestamp_t)now.tv_sec * 1000000;
+}
 
 // first arg: 0 no parallel, other parallel
 int main(int argc, char** argv) {
@@ -21,11 +30,14 @@ int main(int argc, char** argv) {
 
   pyrDown(h1, h0, Size(h1.cols / scale_factor, h1.rows / scale_factor));
 
-  std::cout << *argv[1] << std::endl;
   int isPara = atoi(argv[1]);
+  timestamp_t t0 = get_timestamp();
   Mat Hr = SRSingleImageGMM::predict(h0, scale_factor, levels, n_component, isPara);
-
+  timestamp_t t1 = get_timestamp();
+  double secs = (t1 - t0) / 1000000.0L;
   imwrite("SrGMM.jpg", Hr);
+
+  std::cout << "time for prediction : " << secs << std::endl;
 
   std::cout << "PSNR our Solution = " << getPSNR(h1, Hr) << std::endl;
   std::cout << "SSIM our Solution = " << getMSSIM(h1, Hr) << std::endl;
