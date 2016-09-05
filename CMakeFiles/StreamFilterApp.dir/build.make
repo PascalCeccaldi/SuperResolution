@@ -153,12 +153,62 @@ CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.o.provides: CMakeFiles/Strea
 CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.o.provides.build: CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.o
 
 
+CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o: CMakeFiles/StreamFilterApp.dir/flags.make
+CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o: src/GaussianRegression.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pascal/Projets/PRPA/parallelImages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o -c /home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.cpp
+
+CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.cpp > CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.i
+
+CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.cpp -o CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.s
+
+CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o.requires:
+
+.PHONY : CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o.requires
+
+CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o.provides: CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o.requires
+	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o.provides.build
+.PHONY : CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o.provides
+
+CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o.provides.build: CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o
+
+
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o: CMakeFiles/StreamFilterApp.dir/flags.make
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o: src/SRSingleImageGMM.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pascal/Projets/PRPA/parallelImages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o -c /home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.cpp
+
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.cpp > CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.i
+
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.cpp -o CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.s
+
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o.requires:
+
+.PHONY : CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o.requires
+
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o.provides: CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o.requires
+	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o.provides.build
+.PHONY : CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o.provides
+
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o.provides.build: CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o
+
+
 # Object files for target StreamFilterApp
 StreamFilterApp_OBJECTS = \
 "CMakeFiles/StreamFilterApp.dir/src/main.cpp.o" \
 "CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.o" \
 "CMakeFiles/StreamFilterApp.dir/src/inputFilter.cpp.o" \
-"CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.o"
+"CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.o" \
+"CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o" \
+"CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o"
 
 # External object files for target StreamFilterApp
 StreamFilterApp_EXTERNAL_OBJECTS =
@@ -167,6 +217,8 @@ StreamFilterApp: CMakeFiles/StreamFilterApp.dir/src/main.cpp.o
 StreamFilterApp: CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.o
 StreamFilterApp: CMakeFiles/StreamFilterApp.dir/src/inputFilter.cpp.o
 StreamFilterApp: CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.o
+StreamFilterApp: CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o
+StreamFilterApp: CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o
 StreamFilterApp: CMakeFiles/StreamFilterApp.dir/build.make
 StreamFilterApp: /usr/lib/x86_64-linux-gnu/libtbb.so
 StreamFilterApp: /usr/lib/x86_64-linux-gnu/libopencv_videostab.so.2.4.9
@@ -188,7 +240,7 @@ StreamFilterApp: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.2.4.9
 StreamFilterApp: /usr/lib/x86_64-linux-gnu/libopencv_flann.so.2.4.9
 StreamFilterApp: /usr/lib/x86_64-linux-gnu/libopencv_core.so.2.4.9
 StreamFilterApp: CMakeFiles/StreamFilterApp.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pascal/Projets/PRPA/parallelImages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable StreamFilterApp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pascal/Projets/PRPA/parallelImages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable StreamFilterApp"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/StreamFilterApp.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -200,6 +252,8 @@ CMakeFiles/StreamFilterApp.dir/requires: CMakeFiles/StreamFilterApp.dir/src/main
 CMakeFiles/StreamFilterApp.dir/requires: CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.o.requires
 CMakeFiles/StreamFilterApp.dir/requires: CMakeFiles/StreamFilterApp.dir/src/inputFilter.cpp.o.requires
 CMakeFiles/StreamFilterApp.dir/requires: CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.o.requires
+CMakeFiles/StreamFilterApp.dir/requires: CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o.requires
+CMakeFiles/StreamFilterApp.dir/requires: CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o.requires
 
 .PHONY : CMakeFiles/StreamFilterApp.dir/requires
 

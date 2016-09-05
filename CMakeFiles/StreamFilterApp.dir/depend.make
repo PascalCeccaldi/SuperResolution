@@ -6,6 +6,15 @@ CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.o: /usr/include/opencv/cv.h
 CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.o: /usr/include/opencv/highgui.h
 CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.o: include/ErodeFilter.hh
 
+CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o: src/GaussianRegression.cpp
+CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o: include/GaussianRegression.hh
+CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o: include/includes.h
+
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o: src/SRSingleImageGMM.cpp
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o: include/GaussianRegression.hh
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o: include/SRSingleImageGMM.hh
+CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o: include/includes.h
+
 CMakeFiles/StreamFilterApp.dir/src/inputFilter.cpp.o: src/inputFilter.cpp
 CMakeFiles/StreamFilterApp.dir/src/inputFilter.cpp.o: /usr/include/opencv/cv.h
 CMakeFiles/StreamFilterApp.dir/src/inputFilter.cpp.o: /usr/include/opencv/highgui.h

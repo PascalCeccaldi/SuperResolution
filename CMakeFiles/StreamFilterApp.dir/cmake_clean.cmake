@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.o"
   "CMakeFiles/StreamFilterApp.dir/src/inputFilter.cpp.o"
   "CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.o"
+  "CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o"
+  "CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o"
   "StreamFilterApp.pdb"
   "StreamFilterApp"
 )

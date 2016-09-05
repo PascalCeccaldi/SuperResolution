@@ -81,14 +81,66 @@ CMakeFiles/sres.dir/src/single.cpp.o.provides: CMakeFiles/sres.dir/src/single.cp
 CMakeFiles/sres.dir/src/single.cpp.o.provides.build: CMakeFiles/sres.dir/src/single.cpp.o
 
 
+CMakeFiles/sres.dir/src/GaussianRegression.cpp.o: CMakeFiles/sres.dir/flags.make
+CMakeFiles/sres.dir/src/GaussianRegression.cpp.o: src/GaussianRegression.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pascal/Projets/PRPA/parallelImages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/sres.dir/src/GaussianRegression.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sres.dir/src/GaussianRegression.cpp.o -c /home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.cpp
+
+CMakeFiles/sres.dir/src/GaussianRegression.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sres.dir/src/GaussianRegression.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.cpp > CMakeFiles/sres.dir/src/GaussianRegression.cpp.i
+
+CMakeFiles/sres.dir/src/GaussianRegression.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sres.dir/src/GaussianRegression.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.cpp -o CMakeFiles/sres.dir/src/GaussianRegression.cpp.s
+
+CMakeFiles/sres.dir/src/GaussianRegression.cpp.o.requires:
+
+.PHONY : CMakeFiles/sres.dir/src/GaussianRegression.cpp.o.requires
+
+CMakeFiles/sres.dir/src/GaussianRegression.cpp.o.provides: CMakeFiles/sres.dir/src/GaussianRegression.cpp.o.requires
+	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/GaussianRegression.cpp.o.provides.build
+.PHONY : CMakeFiles/sres.dir/src/GaussianRegression.cpp.o.provides
+
+CMakeFiles/sres.dir/src/GaussianRegression.cpp.o.provides.build: CMakeFiles/sres.dir/src/GaussianRegression.cpp.o
+
+
+CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o: CMakeFiles/sres.dir/flags.make
+CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o: src/SRSingleImageGMM.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pascal/Projets/PRPA/parallelImages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o -c /home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.cpp
+
+CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.cpp > CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.i
+
+CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.cpp -o CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.s
+
+CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o.requires:
+
+.PHONY : CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o.requires
+
+CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o.provides: CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o.requires
+	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o.provides.build
+.PHONY : CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o.provides
+
+CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o.provides.build: CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o
+
+
 # Object files for target sres
 sres_OBJECTS = \
-"CMakeFiles/sres.dir/src/single.cpp.o"
+"CMakeFiles/sres.dir/src/single.cpp.o" \
+"CMakeFiles/sres.dir/src/GaussianRegression.cpp.o" \
+"CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o"
 
 # External object files for target sres
 sres_EXTERNAL_OBJECTS =
 
 sres: CMakeFiles/sres.dir/src/single.cpp.o
+sres: CMakeFiles/sres.dir/src/GaussianRegression.cpp.o
+sres: CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o
 sres: CMakeFiles/sres.dir/build.make
 sres: /usr/lib/x86_64-linux-gnu/libtbb.so
 sres: /usr/lib/x86_64-linux-gnu/libopencv_videostab.so.2.4.9
@@ -110,7 +162,7 @@ sres: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.2.4.9
 sres: /usr/lib/x86_64-linux-gnu/libopencv_flann.so.2.4.9
 sres: /usr/lib/x86_64-linux-gnu/libopencv_core.so.2.4.9
 sres: CMakeFiles/sres.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pascal/Projets/PRPA/parallelImages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable sres"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pascal/Projets/PRPA/parallelImages/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable sres"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/sres.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -119,6 +171,8 @@ CMakeFiles/sres.dir/build: sres
 .PHONY : CMakeFiles/sres.dir/build
 
 CMakeFiles/sres.dir/requires: CMakeFiles/sres.dir/src/single.cpp.o.requires
+CMakeFiles/sres.dir/requires: CMakeFiles/sres.dir/src/GaussianRegression.cpp.o.requires
+CMakeFiles/sres.dir/requires: CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o.requires
 
 .PHONY : CMakeFiles/sres.dir/requires
 

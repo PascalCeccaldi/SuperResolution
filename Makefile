@@ -163,6 +163,66 @@ src/ErodeFilter.cpp.s:
 	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.s
 .PHONY : src/ErodeFilter.cpp.s
 
+src/GaussianRegression.o: src/GaussianRegression.cpp.o
+
+.PHONY : src/GaussianRegression.o
+
+# target to build an object file
+src/GaussianRegression.cpp.o:
+	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/GaussianRegression.cpp.o
+	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o
+.PHONY : src/GaussianRegression.cpp.o
+
+src/GaussianRegression.i: src/GaussianRegression.cpp.i
+
+.PHONY : src/GaussianRegression.i
+
+# target to preprocess a source file
+src/GaussianRegression.cpp.i:
+	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/GaussianRegression.cpp.i
+	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.i
+.PHONY : src/GaussianRegression.cpp.i
+
+src/GaussianRegression.s: src/GaussianRegression.cpp.s
+
+.PHONY : src/GaussianRegression.s
+
+# target to generate assembly for a file
+src/GaussianRegression.cpp.s:
+	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/GaussianRegression.cpp.s
+	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.s
+.PHONY : src/GaussianRegression.cpp.s
+
+src/SRSingleImageGMM.o: src/SRSingleImageGMM.cpp.o
+
+.PHONY : src/SRSingleImageGMM.o
+
+# target to build an object file
+src/SRSingleImageGMM.cpp.o:
+	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o
+	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o
+.PHONY : src/SRSingleImageGMM.cpp.o
+
+src/SRSingleImageGMM.i: src/SRSingleImageGMM.cpp.i
+
+.PHONY : src/SRSingleImageGMM.i
+
+# target to preprocess a source file
+src/SRSingleImageGMM.cpp.i:
+	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.i
+	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.i
+.PHONY : src/SRSingleImageGMM.cpp.i
+
+src/SRSingleImageGMM.s: src/SRSingleImageGMM.cpp.s
+
+.PHONY : src/SRSingleImageGMM.s
+
+# target to generate assembly for a file
+src/SRSingleImageGMM.cpp.s:
+	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.s
+	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.s
+.PHONY : src/SRSingleImageGMM.cpp.s
+
 src/inputFilter.o: src/inputFilter.cpp.o
 
 .PHONY : src/inputFilter.o
@@ -284,6 +344,12 @@ help:
 	@echo "... src/ErodeFilter.o"
 	@echo "... src/ErodeFilter.i"
 	@echo "... src/ErodeFilter.s"
+	@echo "... src/GaussianRegression.o"
+	@echo "... src/GaussianRegression.i"
+	@echo "... src/GaussianRegression.s"
+	@echo "... src/SRSingleImageGMM.o"
+	@echo "... src/SRSingleImageGMM.i"
+	@echo "... src/SRSingleImageGMM.s"
 	@echo "... src/inputFilter.o"
 	@echo "... src/inputFilter.i"
 	@echo "... src/inputFilter.s"

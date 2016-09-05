@@ -4,3 +4,9 @@ build
 .idea
 .DS_Store
 *.swp
+CMakeFiles/*
+Makefile
+013.jpg
+SrGMM.jpg
+StreamFilterApp
+sres

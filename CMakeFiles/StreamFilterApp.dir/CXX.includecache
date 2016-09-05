@@ -10,6 +10,16 @@
 ErodeFilter.hh
 /home/pascal/Projets/PRPA/parallelImages/src/ErodeFilter.hh
 
+/home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.cpp
+GaussianRegression.hh
+/home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.hh
+
+/home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.cpp
+GaussianRegression.hh
+/home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.hh
+SRSingleImageGMM.hh
+/home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.hh
+
 /home/pascal/Projets/PRPA/parallelImages/src/inputFilter.cpp
 inputFilter.hh
 /home/pascal/Projets/PRPA/parallelImages/src/inputFilter.hh
@@ -83,6 +93,30 @@ cv.h
 include/cv.h
 highgui.h
 include/highgui.h
+
+include/GaussianRegression.hh
+includes.h
+include/includes.h
+
+include/SRSingleImageGMM.hh
+includes.h
+include/includes.h
+
+include/includes.h
+opencv2/core/core.hpp
+-
+opencv2/ml/ml.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+opencv2/highgui/highgui.hpp
+-
+math.h
+-
+iostream
+-
+vector
+-
 
 include/inputFilter.hh
 string

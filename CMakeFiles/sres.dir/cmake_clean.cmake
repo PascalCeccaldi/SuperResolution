@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/sres.dir/src/single.cpp.o"
+  "CMakeFiles/sres.dir/src/GaussianRegression.cpp.o"
+  "CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o"
   "sres.pdb"
   "sres"
 )
