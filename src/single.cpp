@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
   int levels = 3;
   int n_component = 3;
   int isPara = atoi(argv[1]);
-  
+
   Mat h0, h1;
   h1 = imread("013.jpg", CV_LOAD_IMAGE_COLOR);
 
@@ -48,6 +48,9 @@ int main(int argc, char** argv) {
   std::cout << "PSNR bicubic = " << getPSNR(h1, bic) << std::endl;
   std::cout << "SSIM bicubic = " << getMSSIM(h1, bic) << std::endl;
 
+  imshow("Our HR Result", Hr);
+  imshow("Bicubic Result", bic);
+  waitKey(0);
   return 0;
 
 }

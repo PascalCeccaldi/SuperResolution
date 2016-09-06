@@ -6,5 +6,5 @@ CXX_FLAGS =  -O3 -std=c++14 -Wall -W -pedantic -g   -std=gnu++14
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/usr/include/opencv -I/home/pascal/Projets/PRPA/parallelImages/include 
+CXX_INCLUDES = -I/usr/include/opencv -I/home/pascal/Projets/PRPA/ParallelImages/include 
 

@@ -10,7 +10,7 @@ std::vector<Mat>* SRSingleImageGMM::buildHPyramid(Mat h0, float scale_factor, in
   std::vector<Mat>* pyrH = new std::vector<Mat>();
   pyrH->push_back(h0);
   Mat temp = h0;
-  if (isPara < 1){
+  if (isPara < 2){
     for (int i = 1; i <= levels + 2; ++i) {
       Mat hmi;
       int h = (int) (temp.cols / scale_factor);
@@ -39,7 +39,7 @@ std::vector<Mat>* SRSingleImageGMM::buildLPyramid(std::vector<Mat>* pyrH, float 
 {
 
   std::vector<Mat>* pyrL = new std::vector<Mat>();
-  if (isPara < 1){
+  if (isPara < 2){
     for (Mat hmi: *pyrH)
     {
       Mat lmi;
@@ -180,7 +180,7 @@ Mat SRSingleImageGMM::buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* 
       }
     }
   } else {
-    tbb::parallel_for(0, int(pyrH->size()), [&](int l){
+    /*tbb::parallel_for(0, int(pyrH->size()), [&](int l){
       Mat* hi = &pyrH->at(l);
       Mat* li = &pyrL->at(l + 1);
       tbb::parallel_for(0, hi->rows, [&](int i){
@@ -190,7 +190,24 @@ Mat SRSingleImageGMM::buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* 
           sample_index++;
         });
       });
-    });
+    });*/
+    tbb::parallel_for( tbb::blocked_range<int>(0, int(pyrH->size())),
+    [&]( const tbb::blocked_range<int> r ) {
+        for(int l=r.begin(), l_end=r.end(); l<l_end; l++){
+          Mat* hi = &pyrH->at(l);
+          Mat* li = &pyrL->at(l + 1);
+          tbb::parallel_for( tbb::blocked_range2d<int>(0, hi->rows, 0, hi->cols),
+          [&]( const tbb::blocked_range2d<int> r ) {
+            for(int i=r.rows().begin(), i_end=r.rows().end(); i<i_end; i++){
+              for(int j=r.cols().begin(), j_end=r.cols().end(); j<j_end; j++){
+                copyCell(hi, &samples, i, j, sample_index, 0);
+                setNeighborhood(li, &samples, i, j, sample_index);
+                sample_index++;
+              }
+            }
+          });
+        }
+      });
   }
 
   return samples;
@@ -246,7 +263,7 @@ Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_comp
       waitKey(1);
     }
   } else {
-    tbb::parallel_for(0, Lm.rows, [&](int i){
+    /*tbb::parallel_for(0, Lm.rows, [&](int i){
       tbb::parallel_for(0, Lm.cols, [&](int j){
         Mat sample = SRSingleImageGMM::getNeighborhood(&Lm, i, j);
         Vec3d px = gr->estimate(sample);
@@ -273,6 +290,35 @@ Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_comp
       });
       imshow("HR Result", Hr);
       waitKey(1);
+    });*/
+    tbb::parallel_for( tbb::blocked_range2d<int>(0, Lm.rows, 0, Lm.cols),
+    [&]( const tbb::blocked_range2d<int> r ) {
+        for(int i=r.rows().begin(), i_end=r.rows().end(); i<i_end; i++){
+            for(int j=r.cols().begin(), j_end=r.cols().end(); j<j_end; j++){
+              Mat sample = SRSingleImageGMM::getNeighborhood(&Lm, i, j);
+              Vec3d px = gr->estimate(sample);
+
+              if (px[0] > 255)
+                px[0] = 255.0;
+              if (px[1] > 255)
+                px[1] = 255.0;
+              if (px[1] > 255)
+                px[1] = 255.0;
+              if (px[2] > 255)
+                px[2] = 255.0;
+              if (px[0] < 0)
+                px[0] = 0;
+              if (px[1] < 0)
+                px[1] = 0;
+              if (px[1] < 0)
+                px[1] = 0;
+              if (px[2] < 0)
+                px[2] = 0;
+
+              Vec3b v0((uchar) round(px[0]), (uchar) round(px[1]), (uchar) round(px[2]));
+              Hr.at<Vec3b>(i, j) = v0;
+            }
+        }
     });
   }
   return Hr;

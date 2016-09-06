@@ -6,21 +6,21 @@
 
 #IncludeRegexTransform: 
 
-/home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.cpp
+/home/pascal/Projets/PRPA/ParallelImages/src/GaussianRegression.cpp
 GaussianRegression.hh
-/home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/GaussianRegression.hh
 
-/home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.cpp
+/home/pascal/Projets/PRPA/ParallelImages/src/SRSingleImageGMM.cpp
 GaussianRegression.hh
-/home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/GaussianRegression.hh
 SRSingleImageGMM.hh
-/home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/SRSingleImageGMM.hh
 tbb/tbb.h
-/home/pascal/Projets/PRPA/parallelImages/src/tbb/tbb.h
+/home/pascal/Projets/PRPA/ParallelImages/src/tbb/tbb.h
 
-/home/pascal/Projets/PRPA/parallelImages/src/single.cpp
+/home/pascal/Projets/PRPA/ParallelImages/src/single.cpp
 SRSingleImageGMM.hh
-/home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/SRSingleImageGMM.hh
 sys/time.h
 -
 

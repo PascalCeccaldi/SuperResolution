@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pascal/Projets/PRPA/parallelImages
+CMAKE_SOURCE_DIR = /home/pascal/Projets/PRPA/ParallelImages
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pascal/Projets/PRPA/parallelImages
+CMAKE_BINARY_DIR = /home/pascal/Projets/PRPA/ParallelImages
 
 #=============================================================================
 # Target rules for target CMakeFiles/sres.dir
@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /home/pascal/Projets/PRPA/parallelImages
 CMakeFiles/sres.dir/all:
 	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/depend
 	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/pascal/Projets/PRPA/parallelImages/CMakeFiles --progress-num=8,9,10,11 "Built target sres"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/pascal/Projets/PRPA/ParallelImages/CMakeFiles --progress-num=8,9,10,11 "Built target sres"
 .PHONY : CMakeFiles/sres.dir/all
 
 # Include target in all.
@@ -76,9 +76,9 @@ all: CMakeFiles/sres.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/sres.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/parallelImages/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/ParallelImages/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/sres.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/parallelImages/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/ParallelImages/CMakeFiles 0
 .PHONY : CMakeFiles/sres.dir/rule
 
 # Convenience name for target.
@@ -103,7 +103,7 @@ clean: CMakeFiles/sres.dir/clean
 CMakeFiles/StreamFilterApp.dir/all:
 	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/depend
 	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/pascal/Projets/PRPA/parallelImages/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target StreamFilterApp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/pascal/Projets/PRPA/ParallelImages/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target StreamFilterApp"
 .PHONY : CMakeFiles/StreamFilterApp.dir/all
 
 # Include target in all.
@@ -113,9 +113,9 @@ all: CMakeFiles/StreamFilterApp.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/StreamFilterApp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/parallelImages/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/ParallelImages/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/StreamFilterApp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/parallelImages/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/ParallelImages/CMakeFiles 0
 .PHONY : CMakeFiles/StreamFilterApp.dir/rule
 
 # Convenience name for target.

@@ -6,47 +6,47 @@
 
 #IncludeRegexTransform: 
 
-/home/pascal/Projets/PRPA/parallelImages/src/ErodeFilter.cpp
+/home/pascal/Projets/PRPA/ParallelImages/src/ErodeFilter.cpp
 ErodeFilter.hh
-/home/pascal/Projets/PRPA/parallelImages/src/ErodeFilter.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/ErodeFilter.hh
 
-/home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.cpp
+/home/pascal/Projets/PRPA/ParallelImages/src/GaussianRegression.cpp
 GaussianRegression.hh
-/home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/GaussianRegression.hh
 
-/home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.cpp
+/home/pascal/Projets/PRPA/ParallelImages/src/SRSingleImageGMM.cpp
 GaussianRegression.hh
-/home/pascal/Projets/PRPA/parallelImages/src/GaussianRegression.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/GaussianRegression.hh
 SRSingleImageGMM.hh
-/home/pascal/Projets/PRPA/parallelImages/src/SRSingleImageGMM.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/SRSingleImageGMM.hh
 tbb/tbb.h
-/home/pascal/Projets/PRPA/parallelImages/src/tbb/tbb.h
+/home/pascal/Projets/PRPA/ParallelImages/src/tbb/tbb.h
 
-/home/pascal/Projets/PRPA/parallelImages/src/inputFilter.cpp
+/home/pascal/Projets/PRPA/ParallelImages/src/inputFilter.cpp
 inputFilter.hh
-/home/pascal/Projets/PRPA/parallelImages/src/inputFilter.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/inputFilter.hh
 
-/home/pascal/Projets/PRPA/parallelImages/src/main.cpp
+/home/pascal/Projets/PRPA/ParallelImages/src/main.cpp
 cv.h
-/home/pascal/Projets/PRPA/parallelImages/src/cv.h
+/home/pascal/Projets/PRPA/ParallelImages/src/cv.h
 inputFilter.hh
-/home/pascal/Projets/PRPA/parallelImages/src/inputFilter.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/inputFilter.hh
 outputFilter.hh
-/home/pascal/Projets/PRPA/parallelImages/src/outputFilter.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/outputFilter.hh
 ErodeFilter.hh
-/home/pascal/Projets/PRPA/parallelImages/src/ErodeFilter.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/ErodeFilter.hh
 highgui.h
-/home/pascal/Projets/PRPA/parallelImages/src/highgui.h
+/home/pascal/Projets/PRPA/ParallelImages/src/highgui.h
 tbb/task_scheduler_init.h
-/home/pascal/Projets/PRPA/parallelImages/src/tbb/task_scheduler_init.h
+/home/pascal/Projets/PRPA/ParallelImages/src/tbb/task_scheduler_init.h
 tbb/pipeline.h
-/home/pascal/Projets/PRPA/parallelImages/src/tbb/pipeline.h
+/home/pascal/Projets/PRPA/ParallelImages/src/tbb/pipeline.h
 
-/home/pascal/Projets/PRPA/parallelImages/src/outputFilter.cpp
+/home/pascal/Projets/PRPA/ParallelImages/src/outputFilter.cpp
 highgui.h
 -
 outputFilter.hh
-/home/pascal/Projets/PRPA/parallelImages/src/outputFilter.hh
+/home/pascal/Projets/PRPA/ParallelImages/src/outputFilter.hh
 stdio.h
 -
 opencv2/opencv.hpp
