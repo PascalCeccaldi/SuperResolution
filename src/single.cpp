@@ -12,16 +12,54 @@ static timestamp_t get_timestamp ()
   return  now.tv_usec + (timestamp_t)now.tv_sec * 1000000;
 }
 
+Mat flatten(Mat img) {
+  for (int i = 0; i < 3; i++) {
+    double min, max;
+    minMaxLoc(img, &min, &max);
+    double OldRange = (max - min);
+    double NewRange = 255.0;
+    img = (((img - min) * NewRange) / OldRange);
+  }
+  Mat out(img.rows, img.cols, CV_8UC3);
+
+  for (int i = 0; i < img.rows; i++)
+  {
+    for (int j = 0; j < img.cols; j++) {
+      Vec3d px = img.at<Vec3d>(i, j);
+
+      if (px[0] > 255)
+        px[0] = 255;
+      if (px[1] > 255)
+        px[1] = 255;
+      if (px[1] > 255)
+        px[1] = 255;
+      if (px[2] > 255)
+        px[2] = 255;
+      if (px[0] < 0)
+        px[0] = 0;
+      if (px[1] < 0)
+        px[1] = 0;
+      if (px[1] < 0)
+        px[1] = 0;
+      if (px[2] < 0)
+        px[2] = 0;
+      Vec3b p0((uchar) px[0], (uchar) px[1], (uchar) px[2]);
+      out.at<Vec3b>(i, j) = p0;
+    }
+  }
+  return out;
+}
+
 // first arg: 0 no parallel, other parallel
 int main(int argc, char** argv) {
 
   float scale_factor = 2;
   int levels = 3;
   int n_component = 3;
-  int isPara = atoi(argv[1]);
+  int isPara = 1;//atoi(argv[1]);
 
   Mat h0, h1;
-  h1 = imread("013.jpg", CV_LOAD_IMAGE_COLOR);
+  h1 = imread("011.png", CV_LOAD_IMAGE_COLOR);
 
   if(! h1.data )
   {
@@ -34,14 +72,27 @@ int main(int argc, char** argv) {
 
   timestamp_t t0 = get_timestamp();
   Mat Hr = SRSingleImageGMM::predict(h0, scale_factor, levels, n_component, isPara);
+  bool flattend = false;
+  Mat out;
+  if (flattend)
+    out = flatten(Hr);
+  else
+  {
+
+    Hr.convertTo(out, CV_8UC3);
+  }
+
+
+
+
   timestamp_t t1 = get_timestamp();
   double secs = (t1 - t0) / 1000000.0L;
-  imwrite("SrGMM.jpg", Hr);
+  imwrite("SrGMM.jpg", out);
 
   std::cout << "time for prediction : " << secs << std::endl;
 
-  std::cout << "PSNR our Solution = " << getPSNR(h1, Hr) << std::endl;
-  std::cout << "SSIM our Solution = " << getMSSIM(h1, Hr) << std::endl;
+  std::cout << "PSNR our Solution = " << getPSNR(h1, out) << std::endl;
+  std::cout << "SSIM our Solution = " << getMSSIM(h1, out) << std::endl;
 
   Mat bic;
   resize(h0, bic, Size(h1.cols, h1.rows), CV_INTER_CUBIC);
