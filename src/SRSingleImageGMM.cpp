@@ -228,7 +228,7 @@ Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_comp
 
   Mat samples = buildSampleData(pyrH, pyrL, isPara);
 
-  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 0.1));
+  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 25, 1));
 
   Mat log_likelihoods;
   model.train(samples, log_likelihoods);
