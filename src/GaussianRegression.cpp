@@ -86,9 +86,7 @@ double GaussianRegressor::computeProbPdf(Mat samples, Mat cov, Mat mean)
   }
   int dim = pos_cov.rows;
   double det = determinant(pos_cov);
-  //std::cout << "DET " << det << std::endl << std::endl;
   double scale = 1.0 / ((pow(2 * M_PI, dim / 2.0) * pow(det, 0.5)));
-  //std::cout << "SCALE " << scale << std::endl << std::endl;
   Mat invcov = pos_cov.inv();
   Mat tmp1 = samples - mean.t();
   Mat tmp2 = tmp1.t() * invcov * tmp1;

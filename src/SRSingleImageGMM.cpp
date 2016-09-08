@@ -57,7 +57,6 @@ std::vector<Mat>* SRSingleImageGMM::buildLPyramid(std::vector<Mat>* pyrH, float 
         h = (int) (hmi.cols * scale_factor);
         w = (int) (hmi.rows * scale_factor);
       }
-      std::cout << w << " " << h << std::endl;
       resize(hmi, lmi, Size(h, w), CV_INTER_CUBIC);
       pyrL->push_back(lmi);
       index++;
@@ -138,14 +137,9 @@ void SRSingleImageGMM::setNeighborhood(Mat* src, Mat* dst, int row, int col, int
         continue;
       if (isInBounds(src, row + i - 1, col + j - 1)) {
         copyCell(src, dst, row + i - 1, col + j - 1, sample_index, index + 3);
+        index += 3;
       }
-      else
-      {
-        //std::cout << "SI " << row + i - 1 << " " << col + j - 1 << std::endl;
-        //std::cout << "DI " << src->rows << " " << src->cols << std::endl;
-        //std::cout << " OUT OF BOUNDS " << std::endl;
-      }
-      index += 3;
+
     }
   }
 }
@@ -160,20 +154,13 @@ Mat SRSingleImageGMM::getNeighborhood(Mat* src, int row, int col)
     for (int j = 0; j < 3; j++) {
       if (i == 1 && j == 1)
         continue;
-      if (isInBounds(src, row + i - 1, col + j - 1)) {
-        Vec3b color = src->at<Vec3b>(row + i - 1, col + j - 1);
+      if (isInBounds(src, row + i - 2, col + j - 1)) {
+        Vec3b color = src->at<Vec3b>(row + i - 2, col + j - 1);
         res.at<double>(index) = (double) color[0];
         res.at<double>(index + 1) = (double) color[1];
         res.at<double>(index + 2) = (double) color[2];
+        index += 3;
       }
-      else
-      {
-        //std::cout << " OUT OF BOUNDS " << std::endl;
-        res.at<double>(index) = 0.0;
-        res.at<double>(index + 1) = 0.0;
-        res.at<double>(index + 2) = 0.0;
-      }
-      index += 3;
     }
   }
   return res;
@@ -194,17 +181,11 @@ Mat SRSingleImageGMM::buildSampleData(std::vector<Mat>* pyrH, std::vector<Mat>* 
     {
       Mat* hi = &pyrH->at(l);
       Mat* li = &pyrL->at(l + 1);
-
-
-
-
       for(int  i = 1; i < hi->rows - 1; i++)
       {
         for (int  j = 1; j < hi->cols - 1; j++)
         {
             copyCell(hi, &samples, i, j, sample_index, 0);
-            std::cout << "HI " << hi->rows << " " << hi->cols << std::endl;
-            std::cout << "LI " << li->rows << " " << li->cols << std::endl;
             setNeighborhood(li, &samples, i, j, sample_index);
             sample_index++;
         }
@@ -247,7 +228,7 @@ Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_comp
 
   Mat samples = buildSampleData(pyrH, pyrL, isPara);
 
-  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 1));
+  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 0.1));
 
   Mat log_likelihoods;
   model.train(samples, log_likelihoods);
@@ -298,14 +279,11 @@ Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_comp
     }
   } else {
 
-    //std::cout << Lm.rows << " " << Lm.cols << std::endl;
-    //std::cout << Hr.rows << " " << Hr.cols << std::endl;
-
     tbb::parallel_for(tbb::blocked_range2d<int>(0, Lm.rows, 0, Lm.cols),
     [&](const tbb::blocked_range2d<int> r) {
         for(int i = r.rows().begin(), i_end = r.rows().end(); i < i_end; i++){
             for(int j = r.cols().begin(), j_end = r.cols().end(); j < j_end; j++){
-              if (i < 2 || i >= Lm.rows - 2 || j >= Lm.cols - 2  || j < 2)
+              if (i < 3 || i >= Lm.rows - 3 || j >= Lm.cols - 3  || j < 3)
               {
                 Vec3b px = Lm.at<Vec3b>(i, j);
                 Hr.at<Vec3b>(i, j) = px;
