@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pascal/Projets/PRPA/ParallelImages
+CMAKE_SOURCE_DIR = /home/pascal/Projets/PRPA/SuperResolution
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pascal/Projets/PRPA/ParallelImages
+CMAKE_BINARY_DIR = /home/pascal/Projets/PRPA/SuperResolution
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/ParallelImages/CMakeFiles /home/pascal/Projets/PRPA/ParallelImages/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/SuperResolution/CMakeFiles /home/pascal/Projets/PRPA/SuperResolution/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/ParallelImages/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pascal/Projets/PRPA/SuperResolution/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,46 +123,6 @@ sres/fast:
 	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/build
 .PHONY : sres/fast
 
-#=============================================================================
-# Target rules for targets named StreamFilterApp
-
-# Build rule for target.
-StreamFilterApp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 StreamFilterApp
-.PHONY : StreamFilterApp
-
-# fast build rule for target.
-StreamFilterApp/fast:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/build
-.PHONY : StreamFilterApp/fast
-
-src/ErodeFilter.o: src/ErodeFilter.cpp.o
-
-.PHONY : src/ErodeFilter.o
-
-# target to build an object file
-src/ErodeFilter.cpp.o:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.o
-.PHONY : src/ErodeFilter.cpp.o
-
-src/ErodeFilter.i: src/ErodeFilter.cpp.i
-
-.PHONY : src/ErodeFilter.i
-
-# target to preprocess a source file
-src/ErodeFilter.cpp.i:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.i
-.PHONY : src/ErodeFilter.cpp.i
-
-src/ErodeFilter.s: src/ErodeFilter.cpp.s
-
-.PHONY : src/ErodeFilter.s
-
-# target to generate assembly for a file
-src/ErodeFilter.cpp.s:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/ErodeFilter.cpp.s
-.PHONY : src/ErodeFilter.cpp.s
-
 src/GaussianRegression.o: src/GaussianRegression.cpp.o
 
 .PHONY : src/GaussianRegression.o
@@ -170,7 +130,6 @@ src/GaussianRegression.o: src/GaussianRegression.cpp.o
 # target to build an object file
 src/GaussianRegression.cpp.o:
 	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/GaussianRegression.cpp.o
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.o
 .PHONY : src/GaussianRegression.cpp.o
 
 src/GaussianRegression.i: src/GaussianRegression.cpp.i
@@ -180,7 +139,6 @@ src/GaussianRegression.i: src/GaussianRegression.cpp.i
 # target to preprocess a source file
 src/GaussianRegression.cpp.i:
 	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/GaussianRegression.cpp.i
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.i
 .PHONY : src/GaussianRegression.cpp.i
 
 src/GaussianRegression.s: src/GaussianRegression.cpp.s
@@ -190,7 +148,6 @@ src/GaussianRegression.s: src/GaussianRegression.cpp.s
 # target to generate assembly for a file
 src/GaussianRegression.cpp.s:
 	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/GaussianRegression.cpp.s
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/GaussianRegression.cpp.s
 .PHONY : src/GaussianRegression.cpp.s
 
 src/SRSingleImageGMM.o: src/SRSingleImageGMM.cpp.o
@@ -200,7 +157,6 @@ src/SRSingleImageGMM.o: src/SRSingleImageGMM.cpp.o
 # target to build an object file
 src/SRSingleImageGMM.cpp.o:
 	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.o
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.o
 .PHONY : src/SRSingleImageGMM.cpp.o
 
 src/SRSingleImageGMM.i: src/SRSingleImageGMM.cpp.i
@@ -210,7 +166,6 @@ src/SRSingleImageGMM.i: src/SRSingleImageGMM.cpp.i
 # target to preprocess a source file
 src/SRSingleImageGMM.cpp.i:
 	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.i
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.i
 .PHONY : src/SRSingleImageGMM.cpp.i
 
 src/SRSingleImageGMM.s: src/SRSingleImageGMM.cpp.s
@@ -220,89 +175,7 @@ src/SRSingleImageGMM.s: src/SRSingleImageGMM.cpp.s
 # target to generate assembly for a file
 src/SRSingleImageGMM.cpp.s:
 	$(MAKE) -f CMakeFiles/sres.dir/build.make CMakeFiles/sres.dir/src/SRSingleImageGMM.cpp.s
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/SRSingleImageGMM.cpp.s
 .PHONY : src/SRSingleImageGMM.cpp.s
-
-src/inputFilter.o: src/inputFilter.cpp.o
-
-.PHONY : src/inputFilter.o
-
-# target to build an object file
-src/inputFilter.cpp.o:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/inputFilter.cpp.o
-.PHONY : src/inputFilter.cpp.o
-
-src/inputFilter.i: src/inputFilter.cpp.i
-
-.PHONY : src/inputFilter.i
-
-# target to preprocess a source file
-src/inputFilter.cpp.i:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/inputFilter.cpp.i
-.PHONY : src/inputFilter.cpp.i
-
-src/inputFilter.s: src/inputFilter.cpp.s
-
-.PHONY : src/inputFilter.s
-
-# target to generate assembly for a file
-src/inputFilter.cpp.s:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/inputFilter.cpp.s
-.PHONY : src/inputFilter.cpp.s
-
-src/main.o: src/main.cpp.o
-
-.PHONY : src/main.o
-
-# target to build an object file
-src/main.cpp.o:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
-
-src/main.i: src/main.cpp.i
-
-.PHONY : src/main.i
-
-# target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
-
-src/main.s: src/main.cpp.s
-
-.PHONY : src/main.s
-
-# target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
-
-src/outputFilter.o: src/outputFilter.cpp.o
-
-.PHONY : src/outputFilter.o
-
-# target to build an object file
-src/outputFilter.cpp.o:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.o
-.PHONY : src/outputFilter.cpp.o
-
-src/outputFilter.i: src/outputFilter.cpp.i
-
-.PHONY : src/outputFilter.i
-
-# target to preprocess a source file
-src/outputFilter.cpp.i:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.i
-.PHONY : src/outputFilter.cpp.i
-
-src/outputFilter.s: src/outputFilter.cpp.s
-
-.PHONY : src/outputFilter.s
-
-# target to generate assembly for a file
-src/outputFilter.cpp.s:
-	$(MAKE) -f CMakeFiles/StreamFilterApp.dir/build.make CMakeFiles/StreamFilterApp.dir/src/outputFilter.cpp.s
-.PHONY : src/outputFilter.cpp.s
 
 src/single.o: src/single.cpp.o
 
@@ -340,25 +213,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... sres"
-	@echo "... StreamFilterApp"
-	@echo "... src/ErodeFilter.o"
-	@echo "... src/ErodeFilter.i"
-	@echo "... src/ErodeFilter.s"
 	@echo "... src/GaussianRegression.o"
 	@echo "... src/GaussianRegression.i"
 	@echo "... src/GaussianRegression.s"
 	@echo "... src/SRSingleImageGMM.o"
 	@echo "... src/SRSingleImageGMM.i"
 	@echo "... src/SRSingleImageGMM.s"
-	@echo "... src/inputFilter.o"
-	@echo "... src/inputFilter.i"
-	@echo "... src/inputFilter.s"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
-	@echo "... src/outputFilter.o"
-	@echo "... src/outputFilter.i"
-	@echo "... src/outputFilter.s"
 	@echo "... src/single.o"
 	@echo "... src/single.i"
 	@echo "... src/single.s"

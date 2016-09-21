@@ -18,13 +18,13 @@ int main(int argc, char** argv) {
 
   float scale_factor = 2;
   int levels = 3;
-  int n_component = 5;
-  int isPara = 1;//atoi(argv[1]);
+  int n_component = 3;
+  int isPara = atoi(argv[1]);
 
   Mat h0, h1;
-  h0 = imread("resize2.jpg", CV_LOAD_IMAGE_COLOR);
+  h1 = imread("resize2.png", CV_LOAD_IMAGE_COLOR);
 
-  if(! h0.data )
+  if(! h1.data )
   {
     std::cout <<  "Could not open or find the image" << std::endl ;
     return -1;
@@ -40,16 +40,16 @@ int main(int argc, char** argv) {
   timestamp_t t1 = get_timestamp();
   double secs = (t1 - t0) / 1000000.0L;
   imwrite("SrGMM.jpg", Hr);
-
-  std::cout << "time for prediction : " << secs << std::endl;
-
-  std::cout << "PSNR our Solution = " << getPSNR(h1, Hr) << std::endl;
-  std::cout << "SSIM our Solution = " << getMSSIM(h1, Hr) << std::endl;
-
   Mat bic;
   resize(h0, bic, Size(h1.cols, h1.rows), CV_INTER_CUBIC);
-  std::cout << "PSNR bicubic = " << getPSNR(h1, bic) << std::endl;
-  std::cout << "SSIM bicubic = " << getMSSIM(h1, bic) << std::endl;
+  std::cout << "time for prediction : " << secs << std::endl;
+
+  std::cout << "PSNR our Solution = " << getPSNR(h1, bic) << std::endl;
+  std::cout << "SSIM our Solution = " << getMSSIM(h1, bic) << std::endl;
+
+
+  std::cout << "PSNR bicubic = " << getPSNR(h1, Hr) << std::endl;
+  std::cout << "SSIM bicubic = " << getMSSIM(h1, Hr) << std::endl;
 
   imwrite("Interp.jpg", bic);
   imshow("Our HR Result", Hr);
