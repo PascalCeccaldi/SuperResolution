@@ -17,12 +17,12 @@ static timestamp_t get_timestamp ()
 int main(int argc, char** argv) {
 
   float scale_factor = 2;
-  int levels = 3;
-  int n_component = 3;
+  int levels = 4;
+  int n_component = 5;
   int isPara = atoi(argv[1]);
 
   Mat h0, h1;
-  h1 = imread("resize2.png", CV_LOAD_IMAGE_COLOR);
+  h1 = imread("resize2.jpg", CV_LOAD_IMAGE_COLOR);
 
   if(! h1.data )
   {
@@ -44,12 +44,12 @@ int main(int argc, char** argv) {
   resize(h0, bic, Size(h1.cols, h1.rows), CV_INTER_CUBIC);
   std::cout << "time for prediction : " << secs << std::endl;
 
-  std::cout << "PSNR our Solution = " << getPSNR(h1, bic) << std::endl;
-  std::cout << "SSIM our Solution = " << getMSSIM(h1, bic) << std::endl;
+  std::cout << "PSNR our Solution = " << getPSNR(h1, Hr) << std::endl;
+  std::cout << "SSIM our Solution = " << getMSSIM(h1, Hr) << std::endl;
 
 
-  std::cout << "PSNR bicubic = " << getPSNR(h1, Hr) << std::endl;
-  std::cout << "SSIM bicubic = " << getMSSIM(h1, Hr) << std::endl;
+  std::cout << "PSNR bicubic = " << getPSNR(h1, bic) << std::endl;
+  std::cout << "SSIM bicubic = " << getMSSIM(h1, bic) << std::endl;
 
   imwrite("Interp.jpg", bic);
   imshow("Our HR Result", Hr);

@@ -11,7 +11,7 @@ std::vector<Mat>* SRSingleImageGMM::buildHPyramid(Mat h0, float scale_factor, in
   pyrH->push_back(h0);
   Mat temp = h0;
   if (isPara < 2){
-    for (int i = 1; i <= levels + 2; i++) {
+    for (int i = 1; i <= levels; i++) {
       Mat hmi;
       int h = (int) (temp.cols / scale_factor);
       int w = (int) (temp.rows / scale_factor);
@@ -20,7 +20,7 @@ std::vector<Mat>* SRSingleImageGMM::buildHPyramid(Mat h0, float scale_factor, in
       temp = hmi;
     }
   } else {
-    tbb::parallel_for(1, levels + 3, [&](int i){
+    tbb::parallel_for(1, levels, [&](int i){
       Mat hmi;
       int h = (int) (temp.cols / scale_factor);
       int w = (int) (temp.rows / scale_factor);
@@ -228,7 +228,7 @@ Mat SRSingleImageGMM::predict(Mat h0, float scale_factor, int levels, int n_comp
 
   Mat samples = buildSampleData(pyrH, pyrL, isPara);
 
-  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 35, 100));
+  EM model(n_component, EM::COV_MAT_GENERIC, TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 35, 1));
 
   Mat log_likelihoods;
   model.train(samples, log_likelihoods);

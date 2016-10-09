@@ -62,14 +62,28 @@ Vec3d GaussianRegressor::estimate(Mat sample)
 {
   std::vector<double> betas = computeBetas(sample);
   Vec3d estimate(0, 0, 0);
+  int maxB = 0;
+  int maxBIndex = 0;
 
   for (unsigned int i = 0; i < betas.size(); i++)
   {
     Vec3d Muiysx = computeMuysx(sample, meansX.at(i), meansY.at(i), covsYX.at(i), covsXX.at(i));
-
+    if (betas.at(i) != 1 && betas.at(i) > maxB)
+    {
+        maxB = betas.at(i);
+        maxBIndex = i;
+    }
     estimate[0] += betas.at(i) * Muiysx[0];
     estimate[1] += betas.at(i) * Muiysx[1];
     estimate[2] += betas.at(i) * Muiysx[2];
+  }
+  if (estimate[0] < 1e-3 && estimate[1] < 1e-3 && estimate[2] < 1e-3 )
+  {
+    int i = maxBIndex;
+    Vec3d Muiysx = computeMuysx(sample, meansX.at(i), meansY.at(i), covsYX.at(i), covsXX.at(i));
+    estimate[0] = Muiysx[0];
+    estimate[1] = Muiysx[1];
+    estimate[2] = Muiysx[2];
   }
 
   return estimate;
